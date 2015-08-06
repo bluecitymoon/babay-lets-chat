@@ -1,0 +1,13 @@
+<ion-view view-title="个人信息">
+    <ion-content>
+        <ion-list>
+            <ion-toggle ng-model="settings.enableFriends">
+                接受好友邀请
+            </ion-toggle>
+            <div class="item item-input">
+                <input type="text" ng-model="username" class="item-input" placeholder="设置当前登录的帐号">
+                <button type="button" class="button button-calm" ng-click="saveConfiguration(username)">确定</button>
+            </div>
+        </ion-list>
+    </ion-content>
+</ion-view>
