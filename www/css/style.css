@@ -1,1 +1,8 @@
 /* Empty. Add your own CSS if you like */
+.avatar-right {
+    float: right;
+    max-width: 40px;
+    max-height: 40px;
+    border-radius: 50%;
+
+}

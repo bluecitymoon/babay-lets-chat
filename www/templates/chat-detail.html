@@ -1,21 +1,25 @@
-<!--
-  This template loads for the 'tab.friend-detail' state (app.js)
-  'friend' is a $scope variable created in the FriendsCtrl controller (controllers.js)
-  The FriendsCtrl pulls data from the Friends service (service.js)
-  The Friends service returns an array of friend data
--->
-<ion-view view-title="消息">
+<ion-modal-view view-title="消息" ng-controller="ChatDetailCtrl">
+    <ion-header-bar>
+        <h1 class="title">{{chat.name}}</h1>
+        <div class="buttons"><button class="button button-icon ion-ios-close-outline" ng-click="closeModal()"></button></div>
+    </ion-header-bar>
     <ion-content>
         <ion-list>
-            <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="message in messages">
-                <p>{{message.chatId}} {{message.message}}</p>
+            <ion-item <!--class="item-remove-animate item-avatar"--> style="border: none;" ng-repeat="message in messages" type="item-text-wrap">
+
+               <!-- <img ng-src="https://avatars3.githubusercontent.com/u/11214?v=3&s=460"> -->
+                <div style="text-align: right; background-color:#b2e281; max-width: 200px; display: inline-block; border-radius: 5px">
+                    <pre>{{message.content}}</pre>
+                    <img ng-src="https://avatars3.githubusercontent.com/u/11214?v=3&s=460" class="avatar-right">
+                </div>
+
             </ion-item>
         </ion-list>
     </ion-content>
     <ion-footer-bar align-title="left" keyboard-attach>
-        <textarea  style="width: 80%" ng-model="typingMessage"></textarea>
+        <input style="width: 80%" ng-model="typingMessage" class="item item-input item-stacked-label">
         <div ng-click="sendMessage(typingMessage)">
             <a><i style="font-size: 40px; margin-left: 15px;" class="ion-ios-paperplane-outline"></i></a>
         </div>
     </ion-footer-bar>
-</ion-view>
+</ion-modal-view>

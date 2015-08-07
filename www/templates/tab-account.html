@@ -8,6 +8,11 @@
                 <input type="text" ng-model="username" class="item-input" placeholder="设置当前登录的帐号">
                 <button type="button" class="button button-calm" ng-click="saveConfiguration(username)">确定</button>
             </div>
+            <div class="item item-input">
+                <input type="text" ng-model="thePersonWantToBeAdded" class="item-input" placeholder="添加好友">
+                <button type="button" class="button button-calm" ng-click="sendAddContactRequest(thePersonWantToBeAdded)">发送申请</button>
+            </div>
+
         </ion-list>
     </ion-content>
 </ion-view>

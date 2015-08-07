@@ -4,7 +4,7 @@ angular.module('starter.controllers', [])
 
     })
 
-    .controller('ChatsCtrl', function ($scope, Chats) {
+    .controller('ChatsCtrl', function ($scope, Chats, ChatDialogService, $rootScope) {
         // With the new view caching in Ionic, Controllers are only called
         // when they are recreated or on app start, instead of every page change.
         // To listen for when this page is active (for example, to refresh data),
@@ -17,18 +17,41 @@ angular.module('starter.controllers', [])
         $scope.remove = function (chat) {
             Chats.remove(chat);
         };
+
+        $scope.openChatDialog = function(chat) {
+
+           // $rootScope.$emit('load-single-chat', {chatId: chatId});
+            currentChat = chat;
+            ChatDialogService.init('templates/chat-detail.html', $scope).then(
+                function(modal) {
+                    modal.show();
+                });
+        };
     })
 
-    .controller('ChatDetailCtrl', function ($scope, $stateParams, Chats, StorageService) {
+    .controller('ChatDetailCtrl', function ($scope, $stateParams, Chats, StorageService, $rootScope, $ionicScrollDelegate) {
 
-        $scope.chat = Chats.get($stateParams.chatId);
+        $scope.chat = currentChat;
 
         $scope.typingMessage = '';
-
+        var toJID = $scope.chat.from + '@' + interfaceAddress;
         $scope.messages = [];
+
+        $rootScope.$on('receive-new-message', function(event, data) {
+
+            console.debug('I get a event' + data.message);
+            var message = JSON.parse(data.message);
+            if (message) {
+                $scope.messages.push(message);
+                $scope.$apply();
+
+                $ionicScrollDelegate.scrollBottom();
+            }
+        });
+
         $scope.sendMessage = function(message) {
-            var toJID = $scope.chat.from + '@192.168.0.116';
-            var fromJID = StorageService.get('username') + '@192.168.0.116';
+
+            var fromJID = StorageService.get('username') + '@' + interfaceAddress;
 
             $scope.typingMessage = '';
 
@@ -39,8 +62,11 @@ angular.module('starter.controllers', [])
 
             connection.send(reply);
 
-            var messageObject = {message: message, chatId: $stateParams.chatId, type: 'me'};
+            var messageObject = {from: fromJID, content: message, timeString: 'Just Now', type: 'me'};
             $scope.messages.push(messageObject);
+
+            $ionicScrollDelegate.scrollBottom();
+
         };
     })
 
@@ -48,10 +74,15 @@ angular.module('starter.controllers', [])
         $scope.settings = {
             enableFriends: true
         };
+        $scope.thePersonWantToBeAdded = '';
 
         $scope.username = StorageService.get('username');
 
         $scope.saveConfiguration = function(username) {
             StorageService.set('username', username);
-        }
+        };
+
+        $scope.sendAddContactRequest = function(name) {
+            connection.send($pres({ to: name + '@' + interfaceAddress, type: "subscribe" }));
+        };
     });

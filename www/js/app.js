@@ -8,13 +8,15 @@
 
 var connection = null;
 var connected = false;
-var currentUserJId = "";
+var interfaceAddress = '192.168.0.100';
+var currentChat = null;
 
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
+var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.services']);
 
-    .constant('BOSH_URL', 'http://192.168.0.116:7070/http-bind/')
+    app.constant('BOSH_URL', 'http://' + interfaceAddress + ':7070/http-bind/')
+    .constant('interface_address', interfaceAddress)
 
-    .run(function ($ionicPlatform, BOSH_URL, StorageService, $ionicLoading) {
+    .run(function ($ionicPlatform, BOSH_URL, StorageService, $ionicLoading, MessageService, $rootScope) {
 
         $ionicPlatform.ready(function () {
             if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
@@ -24,17 +26,47 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
             if (window.StatusBar) {
                 StatusBar.styleLightContent();
             }
-            var onMessage = function (message){
-                alert(message);
+
+            var onMessage = function (recievedMessage){
+
+                var from = recievedMessage.getAttribute('from');
+                var type = recievedMessage.getAttribute('type');
+                var elems = recievedMessage.getElementsByTagName('body');
+                var body = '';
+                if (type == "chat" && elems.length > 0) {
+                    body = Strophe.getText(elems[0]) ;
+                }
+                var message = {from: from, content: body, timeString: '', type: 'you'};
+                //MessageService.pushSingleMessage(message);
+
+                console.debug('received: ' + JSON.stringify(message));
+
+                $rootScope.$emit('receive-new-message', {message: JSON.stringify(message)});
+
                 return true;
             }
+
+            var on_subscription_request = function (stanza)
+            {
+                //&& is_friend(stanza.getAttribute("from"))
+                if(stanza.getAttribute("type") == "subscribe" )
+                {
+                    // Send a 'subscribed' notification back to accept the incoming
+                    // subscription request
+                    connection.send($pres({ to: "friend@example.com", type: "subscribed" }));
+                }
+                return true;
+            };
+
             if (!connected) {
+
                 $ionicLoading.show({
                     template: '<ion-spinner icon=\"spiral\"></ion-spinner>正在登录'
                 });
+
                 connection = new Strophe.Connection(BOSH_URL);
                 var username = StorageService.get('username');
-                connection.connect(username + '@192.168.0.116', username, function (status, error) {
+                connection.connect(username + '@' + interfaceAddress, username, function (status, error) {
 
                     switch (status) {
                         case Strophe.Status.ERROR:
@@ -66,6 +98,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
                                 template: '<ion-spinner icon=\"spiral\"></ion-spinner>已连接'
                             });
                             connection.addHandler(onMessage, null, "message", null, null, null);
+                           // connection.addHandler(on_subscription_request, null, "presence", "subscribe");
+
                             connection.send($pres().tree());
 
                             $ionicLoading.hide();
@@ -128,6 +162,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
                     }
                 }
             })
+
             .state('chat-detail', {
                 url: '/chatsdetail/:chatId',
                 templateUrl: 'templates/chat-detail.html',
