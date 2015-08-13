@@ -1,25 +1,54 @@
 <ion-modal-view view-title="消息" ng-controller="ChatDetailCtrl">
-    <ion-header-bar>
+    <ion-header-bar class="bar-positive">
         <h1 class="title">{{chat.name}}</h1>
-        <div class="buttons"><button class="button button-icon ion-ios-close-outline" ng-click="closeModal()"></button></div>
+        <div class="buttons">
+            <button class="button button-icon ion-ios-close-outline" ng-click="closeModal()"></button>
+        </div>
     </ion-header-bar>
-    <ion-content>
+    <ion-content class="has-header has-footer">
         <ion-list>
-            <ion-item <!--class="item-remove-animate item-avatar"--> style="border: none;" ng-repeat="message in messages" type="item-text-wrap">
+            <!--class="item-remove-animate item-avatar"-->
+            <ion-item style="border: none;" ng-repeat="message in messages" type="item-text-wrap" class="message-wrapper">
+                <div ng-if="message.type === 'me'">
+                    <img class="profile-pic right" ng-src="img/jerry-avatar1.jpeg"  />
+                    <div class="chat-bubble right">
+                        <div class="message" ng-bind-html="message.content | nl2br" autolinker>
+                        </div>
 
-               <!-- <img ng-src="https://avatars3.githubusercontent.com/u/11214?v=3&s=460"> -->
-                <div style="text-align: right; background-color:#b2e281; max-width: 200px; display: inline-block; border-radius: 5px">
-                    <pre>{{message.content}}</pre>
-                    <img ng-src="https://avatars3.githubusercontent.com/u/11214?v=3&s=460" class="avatar-right">
+                        <div class="message-detail">
+                              <span class="bold">{{message.username}}</span> <span am-time-ago="message.date"></span>
+                        </div>
+
+                    </div>
                 </div>
+                <div ng-if="message.type === 'friend'">
+                    <img class="profile-pic left" ng-src="img/jerry-avatar.jpeg"  />
+                    <div class="chat-bubble left">
+                        <div class="message" ng-bind-html="message.content | nl2br" autolinker>
+                        </div>
 
+                        <div class="message-detail">
+                            <span class="bold">{{message.jid}}</span> <span am-time-ago="message.date"></span>
+                        </div>
+
+                    </div>
+                </div>
             </ion-item>
         </ion-list>
     </ion-content>
-    <ion-footer-bar align-title="left" keyboard-attach>
-        <input style="width: 80%" ng-model="typingMessage" class="item item-input item-stacked-label">
-        <div ng-click="sendMessage(typingMessage)">
-            <a><i style="font-size: 40px; margin-left: 15px;" class="ion-ios-paperplane-outline"></i></a>
-        </div>
-    </ion-footer-bar>
+
+    <form name="sendMessageForm" ng-submit="sendMessage(sendMessageForm)" novalidate>
+        <ion-footer-bar class="bar-stable item-input-inset message-footer" keyboard-attach>
+            <label class="item-input-wrapper">
+                <textarea ng-model="input.message" value="" placeholder="此处可以输入很多话" required minlength="1" maxlength="1500" msd-elastic></textarea>
+            </label>
+            <div class="footer-btn-wrap">
+                <button class="button button-icon icon ion-android-send footer-btn" type="submit"
+                        ng-disabled="!input.message || input.message === ''">
+                </button>
+            </div>
+        </ion-footer-bar>
+    </form>
+
+    <div class="cf"></div>
 </ion-modal-view>

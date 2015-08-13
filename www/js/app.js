@@ -8,15 +8,18 @@
 
 var connection = null;
 var connected = false;
-var interfaceAddress = '192.168.0.100';
+var interfaceAddress = '192.168.0.107';
 var currentChat = null;
+var defaultFriendAvatar = 'img/jerry-avatar.jpeg';
+var defaultMyAvatar = 'img/jerry-avatar1.jpeg';
+var currentUserJid = '';
 
-var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.services']);
+var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'nl2br']);
 
     app.constant('BOSH_URL', 'http://' + interfaceAddress + ':7070/http-bind/')
     .constant('interface_address', interfaceAddress)
 
-    .run(function ($ionicPlatform, BOSH_URL, StorageService, $ionicLoading, MessageService, $rootScope) {
+    .run(function ($ionicPlatform, BOSH_URL, StorageService, $ionicLoading, MessageService, $rootScope, $window) {
 
         $ionicPlatform.ready(function () {
             if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
@@ -36,7 +39,7 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
                 if (type == "chat" && elems.length > 0) {
                     body = Strophe.getText(elems[0]) ;
                 }
-                var message = {from: from, content: body, timeString: '', type: 'you'};
+                var message = {from: from, content: body, timeString: '', type: 'friend'};
                 //MessageService.pushSingleMessage(message);
 
                 console.debug('received: ' + JSON.stringify(message));
@@ -44,19 +47,18 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
                 $rootScope.$emit('receive-new-message', {message: JSON.stringify(message)});
 
                 return true;
-            }
-
-            var on_subscription_request = function (stanza)
-            {
-                //&& is_friend(stanza.getAttribute("from"))
-                if(stanza.getAttribute("type") == "subscribe" )
-                {
-                    // Send a 'subscribed' notification back to accept the incoming
-                    // subscription request
-                    connection.send($pres({ to: "friend@example.com", type: "subscribed" }));
-                }
-                return true;
             };
+
+            var loadRoster = function(roster) {
+                angular.forEach(roster, function(value) {
+                    value.avatar = defaultFriendAvatar;
+                });
+                $rootScope.$emit('roster-loaded', {roster: roster});
+            };
+
+            $rootScope.$on('reload-roster', function() {
+                connection.roster.get(loadRoster);
+            });
 
             if (!connected) {
 
@@ -66,6 +68,8 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
 
                 connection = new Strophe.Connection(BOSH_URL);
                 var username = StorageService.get('username');
+                currentUserJid = username;
+
                 connection.connect(username + '@' + interfaceAddress, username, function (status, error) {
 
                     switch (status) {
@@ -104,13 +108,14 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
 
                             $ionicLoading.hide();
 
+                            $rootScope.$emit('reload-roster');
+
                             break;
 
                         case Strophe.Status.DISCONNECTED:
-                            alert(error);
+                            alert('连接已断开');
                             break;
                         case Strophe.Status.DISCONNECTING:
-                            alert(error);
                             break;
                         case Strophe.Status.ATTACHED:
                             alert(error);
@@ -122,6 +127,7 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
                             break;
                     }
                 });
+
             }
         });
     })
@@ -143,12 +149,12 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
 
             // Each tab has its own nav history stack:
 
-            .state('tab.dash', {
-                url: '/dash',
+            .state('tab.rosters', {
+                url: '/rosters',
                 views: {
                     'tab-dash': {
-                        templateUrl: 'templates/tab-dash.html',
-                        controller: 'DashCtrl'
+                        templateUrl: 'templates/tab-rosters.html',
+                        controller: 'RosterCtrl'
                     }
                 }
             })
@@ -180,6 +186,6 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
             });
 
         // if none of the above states are matched, use this as the fallback
-        $urlRouterProvider.otherwise('/tab/dash');
+        $urlRouterProvider.otherwise('/tab/rosters');
 
     });

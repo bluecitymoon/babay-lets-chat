@@ -1,0 +1,21 @@
+<ion-view view-title="邻居">
+    <ion-nav-buttons side="right">
+        <button class="button button-clear" ng-click="addRosterToMyPlate()">
+            <i class="ion-ios-plus-outline" style="color: #0c63ee"></i>
+        </button>
+    </ion-nav-buttons>
+    <ion-content>
+        <ion-list>
+            <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="roster in rosters"
+                      type="item-text-wrap"
+                      ng-click="openChatDialog(roster)">
+                <img ng-src="{{roster.avatar}}" style="border: #fff 2px solid">
+
+                <h2>{{roster.name}}</h2>
+
+                <p>{{roster.jid}}</p>
+
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>

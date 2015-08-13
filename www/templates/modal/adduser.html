@@ -1,0 +1,26 @@
+<ion-modal-view>
+    <ion-header-bar>
+        <h1 class="title">添加邻居</h1>
+
+        <div class="buttons">
+            <button class="button button-clear" ng-click="closeAddRosterDialog()">关闭</button>
+        </div>
+    </ion-header-bar>
+    <ion-content>
+        <form ng-submit="justAddRoster()">
+            <div class="list">
+                <label class="item item-input">
+                    <span class="input-label">帐号</span>
+                    <input type="text" ng-model="rosterIwantToAdd.jid" placeholder="一般是邻居的手机号">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">备注昵称</span>
+                    <input type="text" ng-model="rosterIwantToAdd.name" placeholder="备注帮助您称呼您的邻居">
+                </label>
+                <label class="item">
+                    <button class="button button-block button-positive" type="submit">添加</button>
+                </label>
+            </div>
+        </form>
+    </ion-content>
+</ion-modal-view>
