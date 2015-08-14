@@ -8,13 +8,27 @@
 
 var connection = null;
 var connected = false;
-var interfaceAddress = '192.168.0.107';
+var interfaceAddress = '192.168.0.117';
 var currentChat = null;
 var defaultFriendAvatar = 'img/jerry-avatar.jpeg';
 var defaultMyAvatar = 'img/jerry-avatar1.jpeg';
 var currentUserJid = '';
 
-var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'nl2br']);
+var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'nl2br', 'monospaced.elastic']);
+
+    app.filter('nl2br', ['$filter',
+        function($filter) {
+            return function(data) {
+                if (!data) return data;
+                var dataAfter = data.replace(/\n\r?/g, '<br />');
+                console.debug(dataAfter);
+                return dataAfter;
+            };
+        }
+    ]);
+    app.constant('msdElasticConfig', {
+        append: '\n'
+    });
 
     app.constant('BOSH_URL', 'http://' + interfaceAddress + ':7070/http-bind/')
     .constant('interface_address', interfaceAddress)

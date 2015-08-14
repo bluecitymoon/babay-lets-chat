@@ -44,6 +44,15 @@ controllers.controller('RosterCtrl', function ($scope, StorageService, $ionicLoa
         $rootScope.$emit('reload-roster');
     };
 
+    $scope.removeSingleRoster = function(jid) {
+
+        connection.roster.remove(jid, function(data) {
+            alert(JSON.stringify(data));
+        });
+
+        $rootScope.$emit('reload-roster');
+    };
+
     $scope.openChatDialog = function(roster) {
 
         // $rootScope.$emit('load-single-chat', {chatId: chatId});

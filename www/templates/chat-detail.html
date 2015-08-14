@@ -1,6 +1,7 @@
 <ion-modal-view view-title="消息" ng-controller="ChatDetailCtrl">
     <ion-header-bar class="bar-positive">
         <h1 class="title">{{chat.name}}</h1>
+
         <div class="buttons">
             <button class="button button-icon ion-ios-close-outline" ng-click="closeModal()"></button>
         </div>
@@ -8,28 +9,32 @@
     <ion-content class="has-header has-footer">
         <ion-list>
             <!--class="item-remove-animate item-avatar"-->
-            <ion-item style="border: none;" ng-repeat="message in messages" type="item-text-wrap" class="message-wrapper">
+            <ion-item ng-repeat="message in messages"
+                      class="message-wrapper">
                 <div ng-if="message.type === 'me'">
-                    <img class="profile-pic right" ng-src="img/jerry-avatar1.jpeg"  />
+                    <img class="profile-pic right" ng-src="img/jerry-avatar1.jpeg"/>
+
                     <div class="chat-bubble right">
                         <div class="message" ng-bind-html="message.content | nl2br" autolinker>
                         </div>
 
                         <div class="message-detail">
-                              <span class="bold">{{message.username}}</span> <span am-time-ago="message.date"></span>
+                            <span class="bold">{{message.username}}</span> <span am-time-ago="message.date"></span>
                         </div>
 
                     </div>
                 </div>
                 <div ng-if="message.type === 'friend'">
-                    <img class="profile-pic left" ng-src="img/jerry-avatar.jpeg"  />
+                    <img class="profile-pic left" ng-src="img/jerry-avatar.jpeg"/>
+
                     <div class="chat-bubble left">
                         <div class="message" ng-bind-html="message.content | nl2br" autolinker>
                         </div>
-
+                        <!--
                         <div class="message-detail">
                             <span class="bold">{{message.jid}}</span> <span am-time-ago="message.date"></span>
                         </div>
+                        -->
 
                     </div>
                 </div>
@@ -38,17 +43,18 @@
     </ion-content>
 
     <form name="sendMessageForm" ng-submit="sendMessage(sendMessageForm)" novalidate>
-        <ion-footer-bar class="bar-stable item-input-inset message-footer" keyboard-attach>
-            <label class="item-input-wrapper">
-                <textarea ng-model="input.message" value="" placeholder="此处可以输入很多话" required minlength="1" maxlength="1500" msd-elastic></textarea>
+        <ion-footer-bar style="height: auto" class="bar-stable item-input-inset message-footer" keyboard-attach>
+            <label class="item-input-wrapper" style="height: 100%">
+                <textarea style="width: 80%;" ng-model="input.message" value="" placeholder="此处可以输入很多话"
+                          required minlength="1" maxlength="1500" msd-elastic="\n"></textarea>
             </label>
+
             <div class="footer-btn-wrap">
-                <button class="button button-icon icon ion-android-send footer-btn" type="submit"
+                <button class="button button-icon icon ion-android-send footer-btn"
+                        type="submit"
                         ng-disabled="!input.message || input.message === ''">
                 </button>
             </div>
         </ion-footer-bar>
     </form>
-
-    <div class="cf"></div>
 </ion-modal-view>
