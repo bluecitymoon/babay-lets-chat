@@ -1,4 +1,4 @@
-<ion-modal-view view-title="消息" ng-controller="ChatDetailCtrl">
+<ion-modal-view view-title="消息" ng-controller="ChatDetailCtrl" id="userMessagesView">
     <ion-header-bar class="bar-positive">
         <h1 class="title">{{chat.name}}</h1>
 
@@ -30,11 +30,11 @@
                     <div class="chat-bubble left">
                         <div class="message" ng-bind-html="message.content | nl2br" autolinker>
                         </div>
+
                         <!--
                         <div class="message-detail">
                             <span class="bold">{{message.jid}}</span> <span am-time-ago="message.date"></span>
-                        </div>
-                        -->
+                        </div> -->
 
                     </div>
                 </div>

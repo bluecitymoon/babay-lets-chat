@@ -8,11 +8,12 @@
 
 var connection = null;
 var connected = false;
-var interfaceAddress = '192.168.0.117';
+var interfaceAddress = '192.168.0.122';
 var currentChat = null;
 var defaultFriendAvatar = 'img/jerry-avatar.jpeg';
 var defaultMyAvatar = 'img/jerry-avatar1.jpeg';
 var currentUserJid = '';
+var currentUserFullJid = '';
 
 var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'nl2br', 'monospaced.elastic']);
 
@@ -82,7 +83,9 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
 
                 connection = new Strophe.Connection(BOSH_URL);
                 var username = StorageService.get('username');
+
                 currentUserJid = username;
+                currentUserFullJid = username + '@' + interfaceAddress;
 
                 connection.connect(username + '@' + interfaceAddress, username, function (status, error) {
 
@@ -119,6 +122,8 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
                            // connection.addHandler(on_subscription_request, null, "presence", "subscribe");
 
                             connection.send($pres().tree());
+
+                            connection.muc.init(connection);
 
                             $ionicLoading.hide();
 
@@ -187,6 +192,12 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
                 url: '/chatsdetail/:chatId',
                 templateUrl: 'templates/chat-detail.html',
                 controller: 'ChatDetailCtrl'
+            })
+
+            .state('add-new-roster', {
+                url: '/addnewroster',
+                templateUrl: 'templates/modal/adduser.html',
+                controller: 'UserCtrl'
             })
 
             .state('tab.account', {

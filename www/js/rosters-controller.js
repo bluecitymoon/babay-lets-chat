@@ -18,6 +18,27 @@ controllers.controller('RosterCtrl', function ($scope, StorageService, $ionicLoa
     });
 
 
+
+    $rootScope.$on('receive-new-message', function (event, data) {
+        var message = JSON.parse(data.message);
+
+        console.debug('recieve new message in rosters page ' + data.message);
+
+        if(message) {
+            var jid = message.from;
+            var splittedElements = jid.split('/');
+            var fullJid = splittedElements[0];
+
+            console.debug('I get full JID ' + fullJid);
+
+            ChatDialogService.updateUnreadCount($scope.rosters, fullJid);
+
+            $scope.$apply();
+
+        }
+
+    });
+
     $ionicModal.fromTemplateUrl('templates/modal/adduser.html', {
         scope: $scope
     }).then(function (modal) {
@@ -31,6 +52,10 @@ controllers.controller('RosterCtrl', function ($scope, StorageService, $ionicLoa
     $scope.addRosterToMyPlate = function() {
         $scope.modal.show();
     };
+
+    $scope.$on('$destroy', function() {
+        $scope.modal.remove();
+    });
 
     $scope.rosterIwantToAdd = {};
     $scope.justAddRoster = function() {
@@ -55,7 +80,6 @@ controllers.controller('RosterCtrl', function ($scope, StorageService, $ionicLoa
 
     $scope.openChatDialog = function(roster) {
 
-        // $rootScope.$emit('load-single-chat', {chatId: chatId});
         currentChat = {name: roster.name, from: roster.jid};
         ChatDialogService.init('templates/chat-detail.html', $scope).then(
             function(modal) {

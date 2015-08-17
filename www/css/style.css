@@ -45,7 +45,7 @@ at the bottom as the textarea resizes */
     position: relative;
     height: 100%;
     width: 50px;
-    top: 7px;
+    top: 15px;
 }
 
 .footer-btn {

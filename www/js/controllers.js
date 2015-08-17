@@ -28,7 +28,7 @@ controllers.controller('ChatsCtrl', function ($scope, Chats, ChatDialogService, 
     .controller('ChatDetailCtrl', function ($scope, $stateParams, Chats, StorageService, $rootScope, $ionicScrollDelegate) {
 
         $scope.input = {
-            message: ''//localStorage['userMessage-' + $scope.toUser._id] || ''
+            message: ''
         };
 
         var footerBar; // gets set in $ionicView.enter
@@ -53,7 +53,6 @@ controllers.controller('ChatsCtrl', function ($scope, Chats, ChatDialogService, 
 
         var jidToSend = $scope.chat.from;
 
-        $scope.typingMessage = '';
         var toJID = '';
         if (jidToSend) {
             toJID = jidToSend.toString().match("@") ? jidToSend : jidToSend + '@' + interfaceAddress;
@@ -73,12 +72,10 @@ controllers.controller('ChatsCtrl', function ($scope, Chats, ChatDialogService, 
                 $ionicScrollDelegate.scrollBottom();
             }
         });
-        //$scope.input.message = '';
+
         $scope.sendMessage = function (sendMessageForm) {
 
             var fromJID = StorageService.get('username') + '@' + interfaceAddress;
-
-            $scope.typingMessage = '';
 
             var reply = $msg({
                 to: toJID,
@@ -87,8 +84,10 @@ controllers.controller('ChatsCtrl', function ($scope, Chats, ChatDialogService, 
 
             connection.send(reply);
 
-            var messageObject = {from: fromJID, content: $scope.input.message, timeString: 'Just Now', type: 'me'};
+            var messageObject = {from: fromJID, content: $scope.input.message, timeString: new Date(), type: 'me'};
             $scope.messages.push(messageObject);
+
+            $scope.input.message = '';
 
             $ionicScrollDelegate.scrollBottom();
 
@@ -117,6 +116,11 @@ controllers.controller('ChatsCtrl', function ($scope, Chats, ChatDialogService, 
             footerBar.style.height = newFooterHeight + 'px';
             scroller.style.bottom = newFooterHeight + 'px';
         });
+
+        $scope.$on('$destroy', function() {
+            $scope.modal.remove();
+            console.debug('close dialog');
+        });
     })
 
     .controller('AccountCtrl', function ($scope, $window, StorageService) {
@@ -126,6 +130,7 @@ controllers.controller('ChatsCtrl', function ($scope, Chats, ChatDialogService, 
         $scope.thePersonWantToBeAdded = '';
 
         $scope.username = StorageService.get('username');
+        $scope.roomname = '';
 
         $scope.saveConfiguration = function (username) {
             StorageService.set('username', username);
@@ -140,5 +145,20 @@ controllers.controller('ChatsCtrl', function ($scope, Chats, ChatDialogService, 
             });
             //connection.send($pres({ to: name + '@' + interfaceAddress, type: "subscribe" }));
             //connection.update(jid, 'Jerry', '同事');
+        };
+
+        var successCreateCallback = function(response) {
+            console.debug('create room successfully ' + JSON.stringify(response));
+        };
+        var errorCreateCallback = function(response) {
+            console.debug('create room failed ' + JSON.stringify(response));
+        };
+        $scope.createChatRoom = function(roomname) {
+            console.debug('creating chat room ' + roomname);
+            var d = $pres({"from": currentUserFullJid, "to": roomname  + "@test.192.168.0.122/" + currentUserJid})
+                    .c("x",{"xmlns":"http://jabber.org/protocol/muc"});
+            connection.send(d.tree());
+
+            connection.muc.createInstantRoom(roomname + '@test.192.168.0.122', successCreateCallback, errorCreateCallback);
         };
     });
