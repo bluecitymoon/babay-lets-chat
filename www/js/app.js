@@ -8,7 +8,7 @@
 
 var connection = null;
 var connected = false;
-var interfaceAddress = '192.168.0.122';
+var interfaceAddress = '192.168.0.127';
 var currentChat = null;
 var defaultFriendAvatar = 'img/jerry-avatar.jpeg';
 var defaultMyAvatar = 'img/jerry-avatar1.jpeg';
@@ -27,14 +27,14 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
             };
         }
     ]);
-    app.constant('msdElasticConfig', {
-        append: '\n'
-    });
+    //app.constant('msdElasticConfig', {
+    //    append: '\n'
+    //});
 
     app.constant('BOSH_URL', 'http://' + interfaceAddress + ':7070/http-bind/')
     .constant('interface_address', interfaceAddress)
 
-    .run(function ($ionicPlatform, BOSH_URL, StorageService, $ionicLoading, MessageService, $rootScope, $window) {
+    .run(function ($ionicPlatform, BOSH_URL, StorageService, $ionicLoading, MessageService, $rootScope) {
 
         $ionicPlatform.ready(function () {
             if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
@@ -51,15 +51,15 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
                 var type = recievedMessage.getAttribute('type');
                 var elems = recievedMessage.getElementsByTagName('body');
                 var body = '';
-                if (type == "chat" && elems.length > 0) {
+                if ((type == "chat" || type == 'groupchat') && elems.length > 0) {
+
                     body = Strophe.getText(elems[0]) ;
+
+                    var message = {from: from, content: body, timeString: new Date(), type: 'friend'};
+                    console.debug('received: ' + JSON.stringify(message));
+
+                    $rootScope.$emit('receive-new-message', {message: JSON.stringify(message)});
                 }
-                var message = {from: from, content: body, timeString: '', type: 'friend'};
-                //MessageService.pushSingleMessage(message);
-
-                console.debug('received: ' + JSON.stringify(message));
-
-                $rootScope.$emit('receive-new-message', {message: JSON.stringify(message)});
 
                 return true;
             };
@@ -73,6 +73,40 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
 
             $rootScope.$on('reload-roster', function() {
                 connection.roster.get(loadRoster);
+            });
+
+            var onRoomMessage = function(message) {
+
+                console.debug(message);
+
+                return true;
+            };
+
+            $rootScope.$on('reload-rooms', function() {
+
+                connection.muc.listRooms('test.192.168.0.122', function (stanza) {
+
+                    var rooms = stanza.getElementsByTagName('item');
+                    var roomsTranformed = [];
+                    angular.forEach(rooms, function (value, index) {
+
+                        var room = {
+                            jid: value.getAttribute('jid'),
+                            name: value.getAttribute('name'),
+                            avatar: 'img/group-avatar.jpg'
+                        };
+
+                        console.debug('joining room: ' + room.jid);
+                        connection.muc.join(room.jid, currentUserJid, onMessage);
+
+                        roomsTranformed.push(room);
+                    });
+
+                    $rootScope.$emit('rooms-loaded', {rooms : roomsTranformed});
+                    console.debug('loaded rooms ' + JSON.stringify(roomsTranformed));
+
+                    }, function () {
+                });
             });
 
             if (!connected) {
@@ -119,7 +153,6 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
                                 template: '<ion-spinner icon=\"spiral\"></ion-spinner>已连接'
                             });
                             connection.addHandler(onMessage, null, "message", null, null, null);
-                           // connection.addHandler(on_subscription_request, null, "presence", "subscribe");
 
                             connection.send($pres().tree());
 
@@ -128,6 +161,7 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
                             $ionicLoading.hide();
 
                             $rootScope.$emit('reload-roster');
+                            $rootScope.$emit('reload-rooms');
 
                             break;
 

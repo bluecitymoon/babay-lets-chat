@@ -24,105 +24,6 @@ controllers.controller('ChatsCtrl', function ($scope, Chats, ChatDialogService, 
             });
     };
 })
-
-    .controller('ChatDetailCtrl', function ($scope, $stateParams, Chats, StorageService, $rootScope, $ionicScrollDelegate) {
-
-        $scope.input = {
-            message: ''
-        };
-
-        var footerBar; // gets set in $ionicView.enter
-        var scroller;
-        var txtInput;
-
-        $scope.$on('$ionicView.enter', function() {
-            console.log('UserMessages $ionicView.enter');
-
-            $timeout(function() {
-                footerBar = document.body.querySelector('#userMessagesView .bar-footer');
-                scroller = document.body.querySelector('#userMessagesView .scroll-content');
-                txtInput = angular.element(footerBar.querySelector('textarea'));
-            }, 0);
-
-            //messageCheckTimer = $interval(function() {
-            //    // here you could check for new messages if your app doesn't use push notifications or user disabled them
-            //}, 20000);
-        });
-
-        $scope.chat = currentChat;
-
-        var jidToSend = $scope.chat.from;
-
-        var toJID = '';
-        if (jidToSend) {
-            toJID = jidToSend.toString().match("@") ? jidToSend : jidToSend + '@' + interfaceAddress;
-            console.debug('sending message to ' + toJID);
-        }
-
-        $scope.messages = [];
-
-        $rootScope.$on('receive-new-message', function (event, data) {
-
-            console.debug('Reciving new message in chat dialog ' + data.message);
-            var message = JSON.parse(data.message);
-            if (message) {
-                $scope.messages.push(message);
-                $scope.$apply();
-
-                $ionicScrollDelegate.scrollBottom();
-            }
-        });
-
-        $scope.sendMessage = function (sendMessageForm) {
-
-            var fromJID = StorageService.get('username') + '@' + interfaceAddress;
-
-            var reply = $msg({
-                to: toJID,
-                type: 'chat'
-            }).cnode(Strophe.xmlElement('body', $scope.input.message)).up().c('active', {xmlns: "http://jabber.org/protocol/chatstates"});
-
-            connection.send(reply);
-
-            var messageObject = {from: fromJID, content: $scope.input.message, timeString: new Date(), type: 'me'};
-            $scope.messages.push(messageObject);
-
-            $scope.input.message = '';
-
-            $ionicScrollDelegate.scrollBottom();
-
-        };
-
-        function keepKeyboardOpen() {
-            console.log('keepKeyboardOpen');
-            txtInput.one('blur', function() {
-                console.log('textarea blur, focus back on it');
-                txtInput[0].focus();
-            });
-        }
-
-        $scope.$on('taResize', function(e, ta) {
-            console.log('taResize');
-            if (!ta) return;
-
-            var taHeight = ta[0].offsetHeight;
-            console.log('taHeight: ' + taHeight);
-
-            if (!footerBar) return;
-
-            var newFooterHeight = taHeight + 10;
-            newFooterHeight = (newFooterHeight > 44) ? newFooterHeight : 44;
-
-            footerBar.style.height = newFooterHeight + 'px';
-            scroller.style.bottom = newFooterHeight + 'px';
-        });
-
-        $scope.$on('$destroy', function() {
-            $scope.modal.remove();
-            console.debug('close dialog');
-        });
-    })
-
     .controller('AccountCtrl', function ($scope, $window, StorageService) {
         $scope.settings = {
             enableFriends: true
@@ -153,12 +54,31 @@ controllers.controller('ChatsCtrl', function ($scope, Chats, ChatDialogService, 
         var errorCreateCallback = function(response) {
             console.debug('create room failed ' + JSON.stringify(response));
         };
+
         $scope.createChatRoom = function(roomname) {
             console.debug('creating chat room ' + roomname);
             var d = $pres({"from": currentUserFullJid, "to": roomname  + "@test.192.168.0.122/" + currentUserJid})
                     .c("x",{"xmlns":"http://jabber.org/protocol/muc"});
             connection.send(d.tree());
+            var configuration = {"muc#roomconfig_publicroom": "0", "muc#roomconfig_persistentroom": "1"};
+            connection.muc.createConfiguredRoom(roomname + '@test.192.168.0.122', configuration, successCreateCallback, errorCreateCallback);
+        };
 
-            connection.muc.createInstantRoom(roomname + '@test.192.168.0.122', successCreateCallback, errorCreateCallback);
+        $scope.listRooms = function () {
+
+            connection.muc.listRooms('test.192.168.0.122', function (stanza) {
+                var rooms = stanza.getElementsByTagName('item');
+                angular.forEach(rooms, function(value, index) {
+
+                    var room = {
+                        jid: value.getAttribute('jid'),
+                        name: value.getAttribute('name'),
+                        avatar: 'img/group-avatar.jpg'
+                    };
+                });
+                console.debug(JSON.stringify(rooms));
+
+            }, function () {
+            });
         };
     });

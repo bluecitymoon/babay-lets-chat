@@ -218,7 +218,7 @@ Strophe.addConnectionPlugin('muc', {
    Send a mediated invitation.
    Parameters:
    (String) room - The multi-user chat room name.
-   (String) receiver - The invitation's receiver.
+   (String) receiver - The invitation's receiver
    (String) reason - Optional reason for joining the room.
    Returns:
    msgiq - the unique id used to send the invitation

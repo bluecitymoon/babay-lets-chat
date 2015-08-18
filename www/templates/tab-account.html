@@ -8,11 +8,14 @@
                 <input type="text" ng-model="username" class="item-input" placeholder="设置当前登录的帐号">
                 <button type="button" class="button button-calm" ng-click="saveConfiguration(username)">确定</button>
             </div>
-
             <div class="item item-input">
                 <input type="text" ng-model="roomname" class="item-input" placeholder="创建聊天群">
                 <button type="button" class="button button-calm" ng-click="createChatRoom(roomname)">创建</button>
             </div>
+            <div class="item item-input">
+                <button type="button" class="button button-calm" ng-click="listRooms()">显示群列表</button>
+            </div>
+
         </ion-list>
     </ion-content>
 </ion-view>

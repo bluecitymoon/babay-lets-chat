@@ -78,7 +78,7 @@ angular.module('starter.services', [])
 
     .factory('ChatDialogService', function ($ionicModal, $rootScope) {
 
-        var init = function (tpl, $scope) {
+        var init = function (tpl, type, $scope) {
 
             var promise;
             $scope = $scope || $rootScope.$new();
@@ -88,6 +88,7 @@ angular.module('starter.services', [])
                 animation: 'slide-in-up'
             }).then(function (modal) {
                 $scope.modal = modal;
+                $scope.type = type;
                 return modal;
             });
 
@@ -102,7 +103,7 @@ angular.module('starter.services', [])
             });
 
             return promise;
-        }
+        };
 
         var updateBageCount = function (rosters, fullJid) {
 

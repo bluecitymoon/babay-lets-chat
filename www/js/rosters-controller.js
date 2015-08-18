@@ -1,6 +1,6 @@
-
 controllers.controller('RosterCtrl', function ($scope, StorageService, $ionicLoading, $rootScope, $ionicModal, ChatDialogService) {
     $scope.rosters = [];
+    $scope.rooms = [];
 
     $rootScope.$on('roster-loaded', function(event, data) {
         $scope.rosters = data.roster;
@@ -8,16 +8,20 @@ controllers.controller('RosterCtrl', function ($scope, StorageService, $ionicLoa
 
         $scope.$apply();
     });
+    $rootScope.$on('rooms-loaded', function(e, data) {
+        $scope.rooms = data.rooms;
 
-    $rootScope.$on('user-logged-in', function() {
+        $scope.$apply();
 
-        var loadMyRoster = $iq({type: 'get'}).c('query', {xmlns: 'jabber:iq:roster'});
-        connection.sendIQ(loadMyRoster, function(iq) {
-            alert(iq);
-        });
     });
 
-
+    //$rootScope.$on('user-logged-in', function() {
+    //
+    //    var loadMyRoster = $iq({type: 'get'}).c('query', {xmlns: 'jabber:iq:roster'});
+    //    connection.sendIQ(loadMyRoster, function(iq) {
+    //        alert(iq);
+    //    });
+    //});
 
     $rootScope.$on('receive-new-message', function (event, data) {
         var message = JSON.parse(data.message);
@@ -30,13 +34,10 @@ controllers.controller('RosterCtrl', function ($scope, StorageService, $ionicLoa
             var fullJid = splittedElements[0];
 
             console.debug('I get full JID ' + fullJid);
-
             ChatDialogService.updateUnreadCount($scope.rosters, fullJid);
 
             $scope.$apply();
-
         }
-
     });
 
     $ionicModal.fromTemplateUrl('templates/modal/adduser.html', {
@@ -78,12 +79,12 @@ controllers.controller('RosterCtrl', function ($scope, StorageService, $ionicLoa
         $rootScope.$emit('reload-roster');
     };
 
-    $scope.openChatDialog = function(roster) {
+    $scope.openChatDialog = function(roster, chatType) {
 
         currentChat = {name: roster.name, from: roster.jid};
-        ChatDialogService.init('templates/chat-detail.html', $scope).then(
+        ChatDialogService.init('templates/chat-detail.html', chatType, $scope).then(
             function(modal) {
                 modal.show();
-            });
+        });
     };
 });
