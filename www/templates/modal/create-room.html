@@ -1,0 +1,19 @@
+<ion-view title="创建房间">
+    <ion-content>
+        <form ng-submit="create()">
+            <div class="list">
+                <label class="item item-input">
+                    <span class="input-label">房间名称</span>
+                    <input type="text" name="room" ng-model="room" placeholder="你的房间需要一个响亮的名字">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">我的昵称</span>
+                    <input type="text" name="nick" ng-model="nick" placeholder="输入昵称（可选）">
+                </label>
+                <label class="item">
+                    <button class="button button-block button-positive" type="submit">创建</button>
+                </label>
+            </div>
+        </form>
+    </ion-content>
+</ion-view>

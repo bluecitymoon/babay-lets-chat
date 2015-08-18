@@ -14,6 +14,7 @@ var defaultFriendAvatar = 'img/jerry-avatar.jpeg';
 var defaultMyAvatar = 'img/jerry-avatar1.jpeg';
 var currentUserJid = '';
 var currentUserFullJid = '';
+var nick = 'Jerry';
 
 var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'nl2br', 'monospaced.elastic']);
 
@@ -74,13 +75,6 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
             $rootScope.$on('reload-roster', function() {
                 connection.roster.get(loadRoster);
             });
-
-            var onRoomMessage = function(message) {
-
-                console.debug(message);
-
-                return true;
-            };
 
             $rootScope.$on('reload-rooms', function() {
 
@@ -232,6 +226,12 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
                 url: '/addnewroster',
                 templateUrl: 'templates/modal/adduser.html',
                 controller: 'UserCtrl'
+            })
+
+            .state('create-my-room', {
+                url: '/createmyroom',
+                templateUrl: 'templates/modal/create-room.html',
+                controller: 'CreateRoomCtrl'
             })
 
             .state('tab.account', {

@@ -1,4 +1,4 @@
-controllers.controller('RosterCtrl', function ($scope, StorageService, $ionicLoading, $rootScope, $ionicModal, ChatDialogService) {
+controllers.controller('RosterCtrl', function ($scope, StorageService, $ionicLoading, $rootScope, $ionicModal, ChatDialogService, $state, $ionicActionSheet) {
     $scope.rosters = [];
     $scope.rooms = [];
 
@@ -40,34 +40,36 @@ controllers.controller('RosterCtrl', function ($scope, StorageService, $ionicLoa
         }
     });
 
-    $ionicModal.fromTemplateUrl('templates/modal/adduser.html', {
-        scope: $scope
-    }).then(function (modal) {
-        $scope.modal = modal;
-    });
+    $scope.popupAddingContactTypeDialog = function() {
 
-    $scope.closeAddRosterDialog = function () {
-        $scope.modal.hide();
-    };
+        $ionicActionSheet.show({
+            buttons: [
+                {text: '添加好友'},
+                {text: '进群'},
+                {text: '创建群'}
+            ],
+            titleText: '选择操作类型',
+            cancelText: '取消',
+            cancel: function () {
+            },
+            buttonClicked: function (index, value) {
+                console.debug(index);
 
-    $scope.addRosterToMyPlate = function() {
-        $scope.modal.show();
-    };
+                switch (index) {
+                    case 0:
+                        $state.go('add-new-roster');
+                        break;
+                    case 2:
 
-    $scope.$on('$destroy', function() {
-        $scope.modal.remove();
-    });
+                        $state.go('create-my-room');
+                        break;
 
-    $scope.rosterIwantToAdd = {};
-    $scope.justAddRoster = function() {
+                    default: break;
 
-        var jid = $scope.rosterIwantToAdd.jid + '@' + interfaceAddress;
-
-        connection.roster.add(jid, $scope.rosterIwantToAdd.name, ['Friends'], function(data) {
-            alert(JSON.stringify(data));
+                }
+                return true;
+            }
         });
-
-        $rootScope.$emit('reload-roster');
     };
 
     $scope.removeSingleRoster = function(jid) {
