@@ -6,6 +6,9 @@
     </ion-nav-buttons>
     <ion-content>
         <ion-list>
+            <div class="item item-divider" ng-if="rooms.length > 0">
+                我的房间
+            </div>
             <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="room in rooms"
                       type="item-text-wrap"
                       ng-click="openChatDialog(room, 'room')">
@@ -15,9 +18,17 @@
                 <h2>{{room.name}}</h2>
 
                 <p>{{room.jid}}</p>
-                <ion-option-button class="button button-assertive" ng-click="removeSingleRoster(room.jid)">删除
+                <ion-option-button class="button button-calm" ng-click="goInviteMyFriendPage(room.jid)">
+                    邀请
+                </ion-option-button>
+                <ion-option-button class="button button-assertive" ng-click="removeSingleRoster(room.jid)">
+                    离开
                 </ion-option-button>
             </ion-item>
+
+            <div class="item item-divider" ng-if="rosters.length > 0">
+                我的邻居
+            </div>
             <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="roster in rosters"
                       type="item-text-wrap"
                       ng-click="openChatDialog(roster, 'single')">

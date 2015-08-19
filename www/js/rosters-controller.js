@@ -1,12 +1,15 @@
 controllers.controller('RosterCtrl', function ($scope, StorageService, $ionicLoading, $rootScope, $ionicModal, ChatDialogService, $state, $ionicActionSheet) {
     $scope.rosters = [];
+
     $scope.rooms = [];
 
     $rootScope.$on('roster-loaded', function(event, data) {
         $scope.rosters = data.roster;
         console.debug('loaded roster list -> ' + JSON.stringify($scope.rosters));
-
         $scope.$apply();
+
+        StorageService.setObject('rosters', $scope.rosters);
+
     });
     $rootScope.$on('rooms-loaded', function(e, data) {
         $scope.rooms = data.rooms;
@@ -15,13 +18,10 @@ controllers.controller('RosterCtrl', function ($scope, StorageService, $ionicLoa
 
     });
 
-    //$rootScope.$on('user-logged-in', function() {
-    //
-    //    var loadMyRoster = $iq({type: 'get'}).c('query', {xmlns: 'jabber:iq:roster'});
-    //    connection.sendIQ(loadMyRoster, function(iq) {
-    //        alert(iq);
-    //    });
-    //});
+    $rootScope.$on('chat-dialog-closed', function(e, data) {
+        var jid = data.jid;
+        ChatDialogService.clearUnreadCount($scope.rosters, jid);
+    });
 
     $rootScope.$on('receive-new-message', function (event, data) {
         var message = JSON.parse(data.message);
@@ -34,7 +34,7 @@ controllers.controller('RosterCtrl', function ($scope, StorageService, $ionicLoa
             var fullJid = splittedElements[0];
 
             console.debug('I get full JID ' + fullJid);
-            ChatDialogService.updateUnreadCount($scope.rosters, fullJid);
+            ChatDialogService.updateUnreadCount($scope.rosters, $scope.rooms, fullJid);
 
             $scope.$apply();
         }
@@ -45,8 +45,8 @@ controllers.controller('RosterCtrl', function ($scope, StorageService, $ionicLoa
         $ionicActionSheet.show({
             buttons: [
                 {text: '添加好友'},
-                {text: '进群'},
-                {text: '创建群'}
+                {text: '加入房间'},
+                {text: '创建房间'}
             ],
             titleText: '选择操作类型',
             cancelText: '取消',
@@ -88,5 +88,10 @@ controllers.controller('RosterCtrl', function ($scope, StorageService, $ionicLoa
             function(modal) {
                 modal.show();
         });
+    };
+
+    $scope.goInviteMyFriendPage = function(roomJid) {
+
+        $state.go('invite-to-room', {roomjid: roomJid});
     };
 });

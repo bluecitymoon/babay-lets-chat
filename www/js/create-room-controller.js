@@ -22,13 +22,16 @@ controllers.controller('CreateRoomCtrl', function ($scope, $ionicHistory, $ionic
 
             console.debug('creating chat room ' + this.room);
 
-            var d = $pres({"from": currentUserFullJid, "to": this.room + "@test.192.168.0.127/" + currentUserJid})
+            var d = $pres({"from": currentUserFullJid, "to": this.room + "@" + groupChatServiceName + "/" + currentUserJid})
                 .c("x", {"xmlns": "http://jabber.org/protocol/muc"});
             connection.send(d.tree());
             var configuration = {"muc#roomconfig_publicroom": "0", "muc#roomconfig_persistentroom": "1"};
-            connection.muc.createConfiguredRoom(this.room + '@test.192.168.0.127', configuration, successCreateCallback, errorCreateCallback);
+            connection.muc.createConfiguredRoom(this.room + "@" + groupChatServiceName, configuration, successCreateCallback, errorCreateCallback);
+
+            $rootScope.$emit('reload-rooms');
+
+            $scope.goback();
         }
     };
-
 
 });

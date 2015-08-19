@@ -15,6 +15,7 @@ var defaultMyAvatar = 'img/jerry-avatar1.jpeg';
 var currentUserJid = '';
 var currentUserFullJid = '';
 var nick = 'Jerry';
+var groupChatServiceName = 'conference' +'.'+ interfaceAddress;
 
 var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'nl2br', 'monospaced.elastic']);
 
@@ -23,14 +24,10 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
             return function(data) {
                 if (!data) return data;
                 var dataAfter = data.replace(/\n\r?/g, '<br />');
-                console.debug(dataAfter);
                 return dataAfter;
             };
         }
     ]);
-    //app.constant('msdElasticConfig', {
-    //    append: '\n'
-    //});
 
     app.constant('BOSH_URL', 'http://' + interfaceAddress + ':7070/http-bind/')
     .constant('interface_address', interfaceAddress)
@@ -56,9 +53,10 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
 
                     body = Strophe.getText(elems[0]) ;
 
-                    var message = {from: from, content: body, timeString: new Date(), type: 'friend'};
+                    var message = {from: from, content: body, timeString: new Date(), type: 'friend', messageType: type};
                     console.debug('received: ' + JSON.stringify(message));
 
+                    MessageService.saveSingleMessageToLocalStorage(message);
                     $rootScope.$emit('receive-new-message', {message: JSON.stringify(message)});
                 }
 
@@ -76,9 +74,17 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
                 connection.roster.get(loadRoster);
             });
 
+            var pre_cb = function(santaz) {
+                console.debug(santaz);
+            };
+            var roster_cb = function(santaz) {
+                console.debug(santaz);
+            };
             $rootScope.$on('reload-rooms', function() {
 
-                connection.muc.listRooms('test.192.168.0.122', function (stanza) {
+                console.debug(groupChatServiceName);
+
+                connection.muc.listRooms(groupChatServiceName, function (stanza) {
 
                     var rooms = stanza.getElementsByTagName('item');
                     var roomsTranformed = [];
@@ -91,7 +97,7 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
                         };
 
                         console.debug('joining room: ' + room.jid);
-                        connection.muc.join(room.jid, currentUserJid, onMessage);
+                        connection.muc.join(room.jid, currentUserJid);
 
                         roomsTranformed.push(room);
                     });
@@ -103,6 +109,10 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
                 });
             });
 
+            var godHandler = function(santaz) {
+
+                console.debug('god ' + santaz);
+            };
             if (!connected) {
 
                 $ionicLoading.show({
@@ -147,6 +157,8 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
                                 template: '<ion-spinner icon=\"spiral\"></ion-spinner>已连接'
                             });
                             connection.addHandler(onMessage, null, "message", null, null, null);
+
+                            connection.addHandler(godHandler);
 
                             connection.send($pres().tree());
 
@@ -232,6 +244,12 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
                 url: '/createmyroom',
                 templateUrl: 'templates/modal/create-room.html',
                 controller: 'CreateRoomCtrl'
+            })
+
+            .state('invite-to-room', {
+                url: '/invite2room/:roomjid',
+                templateUrl: 'templates/roster/select-rosters.html',
+                controller: 'InviteMyFriendToRoomCtrl'
             })
 
             .state('tab.account', {

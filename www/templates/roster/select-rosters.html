@@ -1,0 +1,20 @@
+<ion-view view-title="房间邀请">
+    <ion-nav-buttons side="right">
+        <a class="button button-clear" ng-click="popupAddingContactTypeDialog()">
+            <i class="ion-ios-plus-outline" style="color: #0c63ee"></i>
+        </a>
+    </ion-nav-buttons>
+    <ion-content>
+        <ul class="list">
+            <li class="item item-checkbox" ng-repeat="roster in rosters">
+                <label class="checkbox">
+                    <input type="checkbox" name="selectedRosters">
+                </label>
+
+                <h2>{{roster.name}}</h2>
+
+                <p>{{roster.jid}}</p>
+            </li>
+        </ul>
+    </ion-content>
+</ion-view>

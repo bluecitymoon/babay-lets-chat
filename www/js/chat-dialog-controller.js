@@ -2,16 +2,21 @@
  * Created by jerry on 17/8/15.
  */
 
-controllers.controller('ChatDetailCtrl', function ($scope, $stateParams, Chats, StorageService, $rootScope, $ionicScrollDelegate) {
+controllers.controller('ChatDetailCtrl', function ($scope, $stateParams, Chats, StorageService, $rootScope, $ionicScrollDelegate, MessageService) {
+    $scope.messages = [];
 
     $scope.input = {
         message: ''
     };
 
+    $scope.$watch(function($scope) { return $scope.messages}, function(newValue, oldValue) {
+        $ionicScrollDelegate.scrollBottom();
+    });
+
     var footerBar; // gets set in $ionicView.enter
     var scroller;
     var txtInput;
-
+    //TODO not triggered
     $scope.$on('$ionicView.enter', function() {
         console.log('UserMessages $ionicView.enter');
 
@@ -30,9 +35,10 @@ controllers.controller('ChatDetailCtrl', function ($scope, $stateParams, Chats, 
     if (jidToSend) {
         toJID = jidToSend.toString().match("@") ? jidToSend : jidToSend + '@' + interfaceAddress;
         console.debug('sending message to ' + toJID);
-    }
+        $scope.messages = MessageService.getMessagesFromSingleFriendInLocalStorage($scope.chat.from);
 
-    $scope.messages = [];
+        $scope.$applyAsync();
+    }
 
     $rootScope.$on('receive-new-message', function (event, data) {
 
@@ -60,15 +66,19 @@ controllers.controller('ChatDetailCtrl', function ($scope, $stateParams, Chats, 
 
                 connection.send(reply);
 
-                var messageObject = {from: fromJID, content: $scope.input.message, timeString: new Date(), type: 'me'};
+                var messageObject = {from: toJID, to: fromJID, content: $scope.input.message, timeString: new Date(), type: 'me'};
                 $scope.messages.push(messageObject);
+
+                MessageService.saveSingleMessageToLocalStorage(messageObject);
 
                 break;
             case 'room':
 
                 connection.muc.groupchat(toJID, $scope.input.message);
-                var messageObject = {from: fromJID, content: $scope.input.message, timeString: new Date(), type: 'me'};
+                var messageObject = {from: toJID, to: fromJID, content: $scope.input.message, timeString: new Date(), type: 'me'};
                 $scope.messages.push(messageObject);
+
+                MessageService.saveSingleMessageToLocalStorage(messageObject);
 
                 break;
             default:
@@ -76,9 +86,7 @@ controllers.controller('ChatDetailCtrl', function ($scope, $stateParams, Chats, 
         }
 
         $scope.input.message = '';
-
         $ionicScrollDelegate.scrollBottom();
-
     };
 
     function keepKeyboardOpen() {
@@ -105,9 +113,10 @@ controllers.controller('ChatDetailCtrl', function ($scope, $stateParams, Chats, 
 
     $scope.$on('$destroy', function() {
         $scope.modal.remove();
-        console.debug('close dialog');
 
         console.debug($scope.type);
+
+        $rootScope.$emit('chat-dialog-closed', {jid: $scope.chat.from});
     });
 
 });

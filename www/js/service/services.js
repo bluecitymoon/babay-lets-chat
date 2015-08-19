@@ -1,7 +1,6 @@
-angular.module('starter.services', [])
+var services = angular.module('starter.services', [])
 
     .factory('Chats', function (StorageService) {
-        // Might use a resource here that returns a JSON array
 
         // Some fake testing data
         var chats = [{
@@ -49,30 +48,64 @@ angular.module('starter.services', [])
             },
             getObject: function(key) {
                 return JSON.parse($window.localStorage[key] || '{}');
+            },
+            getArray: function(key) {
+                return JSON.parse($window.localStorage[key] || '[]');
             }
         };
     })
 
-    .factory('MessageService', function () {
-        var messages = [{from: '', content: '', timeString: ''}];
+    .factory('MessageService', function (StorageService, Utils) {
+        var messages = [];
 
         function getMessagesFromSingleFriend(from) {
 
             for (var i = 0; i < messages.length; i++) {
                 if (messages[i].from === from) {
-                    return messages[i];
+                    return messages[i].items;
                 }
             }
-            return null;
+            return [];
         }
 
         function pushSingleMessage(message) {
-            messages.push(message);
+
+            var fromJid = message.from;
+
+            var items = getMessagesFromSingleFriend(fromJid);
+            if(items.length == 0) {
+                messages.push({jid: message.from, items: [message]});
+            } else {
+                items.push(message);
+            }
+
         }
+
+        var saveSingleMessageToLocalStorage = function(message) {
+
+            var messageKey = message.from.match('/')? 'message_' + Utils.getFullJid(message.from) : 'message_' + message.from;
+
+            var storedMessages = StorageService.getArray(messageKey);
+
+            if(storedMessages.length == 0) {
+                storedMessages = [message];
+            } else {
+                storedMessages.push(message);
+            }
+
+            StorageService.setObject(messageKey, storedMessages);
+        };
+
+        var getMessagesFromSingleFriendInLocalStorage = function(fullJid) {
+
+            return StorageService.getArray('message_' + fullJid);
+        };
 
         return {
             getMessagesFromSingleFriend: getMessagesFromSingleFriend,
-            pushSingleMessage: pushSingleMessage
+            pushSingleMessage: pushSingleMessage,
+            saveSingleMessageToLocalStorage: saveSingleMessageToLocalStorage,
+            getMessagesFromSingleFriendInLocalStorage: getMessagesFromSingleFriendInLocalStorage
         };
     })
 
@@ -105,8 +138,9 @@ angular.module('starter.services', [])
             return promise;
         };
 
-        var updateBageCount = function (rosters, fullJid) {
+        var updateBageCount = function (rosters, rooms, fullJid) {
 
+            //rosters.append(rooms);
             for (var i = 0; i < rosters.length; i++) {
                 if (rosters[i].jid === fullJid) {
 
@@ -121,10 +155,23 @@ angular.module('starter.services', [])
             }
         };
 
+        var clearUnreadCount = function(rosters, jid) {
+
+            for (var i = 0; i < rosters.length; i++) {
+                if (rosters[i].jid === jid) {
+
+                    rosters[i].unread = 0
+
+                    console.debug('Service clear up the unread count.');
+                    return;
+                }
+            }
+        };
+
         return {
             init: init,
-            updateUnreadCount: updateBageCount
-
+            updateUnreadCount: updateBageCount,
+            clearUnreadCount: clearUnreadCount
        };
     })
 
