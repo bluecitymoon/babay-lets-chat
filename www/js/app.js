@@ -1,10 +1,3 @@
-// Ionic Starter App
-
-// angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires'
-// 'starter.services' is found in services.js
-// 'starter.controllers' is found in controllers.js
 
 var connection = null;
 var connected = false;
@@ -17,7 +10,7 @@ var currentUserFullJid = '';
 var nick = 'Jerry';
 var groupChatServiceName = 'conference' +'.'+ interfaceAddress;
 
-var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'nl2br', 'monospaced.elastic']);
+var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'nl2br', 'monospaced.elastic', 'checklist-model']);
 
     app.filter('nl2br', ['$filter',
         function($filter) {
@@ -48,6 +41,19 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
                 var from = recievedMessage.getAttribute('from');
                 var type = recievedMessage.getAttribute('type');
                 var elems = recievedMessage.getElementsByTagName('body');
+                var myMessage = {from: from, type: type, elems: elems};
+                console.debug(recievedMessage);
+
+                var joinToGroupReason = $(recievedMessage).find('reason').get();
+
+                if(joinToGroupReason[0] && joinToGroupReason[0].textContent && joinToGroupReason[0].textContent == 'invite-to-group') {
+                    var inviteFrom  = $(recievedMessage).find('invite').map(function () {
+                        return $(this).attr("from");
+                    }).get();
+
+                    console.debug(inviteFrom + ' invites you to join ' + from );
+                }
+
                 var body = '';
                 if ((type == "chat" || type == 'groupchat') && elems.length > 0) {
 

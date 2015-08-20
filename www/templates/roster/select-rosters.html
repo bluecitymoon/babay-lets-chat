@@ -1,20 +1,18 @@
 <ion-view view-title="房间邀请">
-    <ion-nav-buttons side="right">
-        <a class="button button-clear" ng-click="popupAddingContactTypeDialog()">
-            <i class="ion-ios-plus-outline" style="color: #0c63ee"></i>
-        </a>
-    </ion-nav-buttons>
     <ion-content>
         <ul class="list">
-            <li class="item item-checkbox" ng-repeat="roster in rosters">
-                <label class="checkbox">
-                    <input type="checkbox" name="selectedRosters">
+            <ion-item class="item item-checkbox item-checkbox-right item-remove-animate item-avatar item-icon-right" ng-repeat="roster in rosters"
+                      type="item-text-wrap">
+                <img ng-src="{{roster.avatar}}">
+
+                <h2 style="margin-left: 50px;">{{roster.name}}</h2>
+                <label class="checkbox" style="float: right">
+                    <input type="checkbox" checklist-model="selectedJids" checklist-value="roster.jid">
                 </label>
-
-                <h2>{{roster.name}}</h2>
-
-                <p>{{roster.jid}}</p>
-            </li>
+            </ion-item>
         </ul>
     </ion-content>
+    <div class="bar bar-footer bar-positive" ng-click="inviteSelectedFriendToRoom()">
+        <button class="button button-clear title">确定邀请</button>
+    </div>
 </ion-view>

@@ -17,4 +17,19 @@ controllers.controller('InviteMyFriendToRoomCtrl', function ($scope, $ionicHisto
     var errorCreateCallback = function(response) {
         console.debug(response);
     };
+
+    $scope.selectedJids = [];
+    $scope.inviteSelectedFriendToRoom = function() {
+
+        $ionicLoading.show();
+
+        //angular.forEach($scope.selectedJids, function(jid, index) {
+        //
+        //    connection.muc.directInvite(roomJid, jid);
+        //});
+
+        connection.muc.multipleInvites(roomJid, $scope.selectedJids, 'invite-to-group');
+
+        $ionicLoading.hide();
+    };
 });
