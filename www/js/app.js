@@ -10,6 +10,8 @@ var currentUserFullJid = '';
 var nick = 'Jerry';
 var groupChatServiceName = 'conference' +'.'+ interfaceAddress;
 
+
+//, 'ui-notification'
 var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'nl2br', 'monospaced.elastic', 'checklist-model']);
 
     app.filter('nl2br', ['$filter',
