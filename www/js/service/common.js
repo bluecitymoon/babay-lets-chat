@@ -8,7 +8,16 @@ services.factory('Utils', function () {
         return fullJid;
     };
 
+    function getJidHeader(longestJid) {
+
+        var splittedElements = longestJid.split('@');
+        var header = splittedElements[0];
+
+        return header;
+    };
+
     return {
-        getFullJid: getFullJid
+        getFullJid: getFullJid,
+        getJidHeader: getJidHeader
     };
 });

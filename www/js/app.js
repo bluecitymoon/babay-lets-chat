@@ -1,10 +1,10 @@
 
 var connection = null;
 var connected = false;
-var interfaceAddress = '192.168.0.127';
+var interfaceAddress = '192.168.0.118';
+var snsInterface = 'http://192.168.0.118:8080';
 var currentChat = null;
 var defaultFriendAvatar = 'img/jerry-avatar.jpeg';
-var defaultMyAvatar = 'img/jerry-avatar1.jpeg';
 var currentUserJid = '';
 var currentUserFullJid = '';
 var nick = 'Jerry';
@@ -19,6 +19,7 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
             return function(data) {
                 if (!data) return data;
                 var dataAfter = data.replace(/\n\r?/g, '<br />');
+
                 return dataAfter;
             };
         }
@@ -27,9 +28,10 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
     app.constant('BOSH_URL', 'http://' + interfaceAddress + ':7070/http-bind/')
     .constant('interface_address', interfaceAddress)
 
-    .run(function ($ionicPlatform, BOSH_URL, StorageService, $ionicLoading, MessageService, $rootScope) {
+    .run(function ($ionicPlatform, BOSH_URL, StorageService, $ionicLoading, MessageService, $rootScope, Utils, StartupService, Chats) {
 
         $ionicPlatform.ready(function () {
+
             if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
                 cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
                 cordova.plugins.Keyboard.disableScroll(true);
@@ -42,9 +44,7 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
 
                 var from = recievedMessage.getAttribute('from');
                 var type = recievedMessage.getAttribute('type');
-                var elems = recievedMessage.getElementsByTagName('body');
-                var myMessage = {from: from, type: type, elems: elems};
-                console.debug(recievedMessage);
+                var elements = recievedMessage.getElementsByTagName('body');
 
                 var joinToGroupReason = $(recievedMessage).find('reason').get();
 
@@ -53,19 +53,27 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
                         return $(this).attr("from");
                     }).get();
 
-                    console.debug(inviteFrom + ' invites you to join ' + from );
+                    var message = {from: inviteFrom, type: 'info', content:  inviteFrom + '邀请你加入了' + from, title: '消息通知'};
+                    Chats.saveOrUpdateChat(message);
+
                 }
 
                 var body = '';
-                if ((type == "chat" || type == 'groupchat') && elems.length > 0) {
+                if ((type == "chat" || type == 'groupchat') && elements.length > 0) {
 
                     body = Strophe.getText(elems[0]) ;
 
-                    var message = {from: from, content: body, timeString: new Date(), type: 'friend', messageType: type};
-                    console.debug('received: ' + JSON.stringify(message));
+                    if(Utils.getFullJid(from) == currentUserFullJid && type == 'groupchat') {
+                        console.debug('recieve my own message');
+                    } else {
 
-                    MessageService.saveSingleMessageToLocalStorage(message);
-                    $rootScope.$emit('receive-new-message', {message: JSON.stringify(message)});
+                        var message = {from: from, content: body, timeString: new Date(), type: 'friend', messageType: type};
+                        console.debug('received: ' + JSON.stringify(message));
+
+                        MessageService.saveSingleMessageToLocalStorage(message);
+
+                        $rootScope.$emit('receive-new-message', {message: JSON.stringify(message)});
+                    }
                 }
 
                 return true;
@@ -82,15 +90,7 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
                 connection.roster.get(loadRoster);
             });
 
-            var pre_cb = function(santaz) {
-                console.debug(santaz);
-            };
-            var roster_cb = function(santaz) {
-                console.debug(santaz);
-            };
-            $rootScope.$on('reload-rooms', function() {
-
-                console.debug(groupChatServiceName);
+            $rootScope.$on('load-and-join-rooms', function() {
 
                 connection.muc.listRooms(groupChatServiceName, function (stanza) {
 
@@ -111,16 +111,15 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
                     });
 
                     $rootScope.$emit('rooms-loaded', {rooms : roomsTranformed});
+
+                    StorageService.setObject(currentUserJid + '_' + 'rooms', roomsTranformed);
+
                     console.debug('loaded rooms ' + JSON.stringify(roomsTranformed));
 
                     }, function () {
                 });
             });
 
-            var godHandler = function(santaz) {
-
-                console.debug('god ' + santaz);
-            };
             if (!connected) {
 
                 $ionicLoading.show({
@@ -166,8 +165,6 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
                             });
                             connection.addHandler(onMessage, null, "message", null, null, null);
 
-                            connection.addHandler(godHandler);
-
                             connection.send($pres().tree());
 
                             connection.muc.init(connection);
@@ -175,7 +172,7 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
                             $ionicLoading.hide();
 
                             $rootScope.$emit('reload-roster');
-                            $rootScope.$emit('reload-rooms');
+                            $rootScope.$emit('load-and-join-rooms');
 
                             break;
 

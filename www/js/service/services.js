@@ -2,35 +2,51 @@ var services = angular.module('starter.services', [])
 
     .factory('Chats', function (StorageService) {
 
-        // Some fake testing data
-        var chats = [{
-            id: 0,
-            name: 'Jerry',
-            lastText: 'You on your way?',
-            face: 'https://pbs.twimg.com/profile_images/514549811765211136/9SgAuHeY.png',
-            from: 1
-        }];
-
         function saveAllLocalChat() {
             StorageService.set('allchats', JSON.stringify(chats));
         };
 
+        var loadAllLocalChats = function () {
+
+            return StorageService.getArray('localchats');
+        };
+
+        var saveOrUpdateChat = function(message) {
+
+            var storedChats = StorageService.getArray('localchats');
+            var targetMessage = null;
+            for (var i = 0; i < storedChats.length; i++) {
+                if (storedChats[i].from === message.from && storedChats[i].type === message.type) {
+                    targetMessage = storedChats[i];
+                    break;
+                }
+            }
+
+            if(targetMessage) {
+
+                targetMessage.lastText = message.content;
+
+            } else {
+
+                targetMessage = {};
+                targetMessage.lastText = message.content;
+                targetMessage.from = message.from;
+                targetMessage.type = message.type;
+                targetMessage.title = message.title;
+                if(message.title == '消息通知') {
+                    targetMessage.avatar = 'img/hayizeku/lufee.jpg';
+                }
+
+                storedChats.push(targetMessage);
+            }
+
+            StorageService.setObject('localchats', storedChats);
+        };
+
         return {
             saveAllLocalChat: saveAllLocalChat,
-            all: function () {
-                return chats;
-            },
-            remove: function (chat) {
-                chats.splice(chats.indexOf(chat), 1);
-            },
-            get: function (chatId) {
-                for (var i = 0; i < chats.length; i++) {
-                    if (chats[i].id === parseInt(chatId)) {
-                        return chats[i];
-                    }
-                }
-                return null;
-            }
+            loadAllLocalChats: loadAllLocalChats,
+            saveOrUpdateChat: saveOrUpdateChat
         };
     })
 
@@ -52,6 +68,34 @@ var services = angular.module('starter.services', [])
             getArray: function(key) {
                 return JSON.parse($window.localStorage[key] || '[]');
             }
+        };
+    })
+
+    .factory('ChatRoomService', function ($http, $rootScope, Utils) {
+
+
+        var singleInvite = function(jids, roomName) {
+
+            var name = Utils.getJidHeader(roomName);
+
+            $http({
+                url: snsInterface + '/api/chatRooms/invite/' + jids + '/toroom/' + name,
+                method: 'POST'
+            }).success(function (response, status, headers, config) {
+
+                console.debug(response);
+                $rootScope.$emit('flights-loaded', {flights: response});
+
+            }).error(function (response, status, headers, config) {
+
+                console.debug(response);
+                $rootScope.$emit('flights-loaded', {flights: []});
+            });
+        };
+
+        return {
+            singleInvite: singleInvite
+
         };
     })
 

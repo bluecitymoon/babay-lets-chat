@@ -1,16 +1,25 @@
 controllers.controller('RosterCtrl', function ($scope, StorageService, $ionicLoading, $rootScope, $ionicModal, ChatDialogService, $state, $ionicActionSheet) {
+
+    $scope.$on('$ionicView.enter', function() {
+        console.log('UserMessages $ionicView.enter');
+        $scope.rooms = StorageService.getArray(currentUserJid + '_' + 'rooms');
+
+    });
+
     $scope.rosters = [];
 
     $scope.rooms = [];
 
     $rootScope.$on('roster-loaded', function(event, data) {
+
         $scope.rosters = data.roster;
-        console.debug('loaded roster list -> ' + JSON.stringify($scope.rosters));
+
         $scope.$apply();
 
         StorageService.setObject('rosters', $scope.rosters);
 
     });
+
     $rootScope.$on('rooms-loaded', function(e, data) {
         $scope.rooms = data.rooms;
 
@@ -33,7 +42,6 @@ controllers.controller('RosterCtrl', function ($scope, StorageService, $ionicLoa
             var splittedElements = jid.split('/');
             var fullJid = splittedElements[0];
 
-            console.debug('I get full JID ' + fullJid);
             ChatDialogService.updateUnreadCount($scope.rosters, $scope.rooms, fullJid);
 
             $scope.$apply();
