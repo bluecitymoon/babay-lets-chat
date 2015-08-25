@@ -73,7 +73,7 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
 
                         MessageService.saveSingleMessageToLocalStorage(message);
 
-                        var chatlog = {from: inviteFrom, type: type, content:  body, title: Utils.getJidHeader(from), avatar: defaultFriendAvatar};
+                        var chatlog = {jid:from, type: type, content: body, title: Utils.getJidHeader(from), name: Utils.getJidHeader(from), avatar: defaultFriendAvatar};
                         Chats.saveOrUpdateChat(chatlog);
 
                         $rootScope.$emit('receive-new-message', {message: JSON.stringify(message)});

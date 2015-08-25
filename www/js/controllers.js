@@ -1,6 +1,6 @@
 var controllers = angular.module('starter.controllers', []);
 
-controllers.controller('ChatsCtrl', function ($scope, Chats, ChatDialogService, $rootScope) {
+controllers.controller('ChatsCtrl', function ($scope, Chats, ChatDialogService, $rootScope, Utils) {
     // With the new view caching in Ionic, Controllers are only called
     // when they are recreated or on app start, instead of every page change.
     // To listen for when this page is active (for example, to refresh data),
@@ -20,12 +20,15 @@ controllers.controller('ChatsCtrl', function ($scope, Chats, ChatDialogService, 
         Chats.remove(chat);
     };
 
-    $scope.openChatDialog = function (chat) {
 
-        if (chat.type && chat.type != 'info') {
+    $scope.openChatDialog = function(roster) {
 
-            currentChat = chat;
-            ChatDialogService.init('templates/chat-detail.html', $scope).then(
+        console.debug('opening ' + JSON.stringify(roster));
+
+        if (roster.type && roster.type != 'info') {
+
+            currentChat = {name: roster.name, from: Utils.getFullJid(roster.jid)};
+            ChatDialogService.init('templates/chat-detail.html', roster.type, $scope).then(
                 function (modal) {
                     modal.show();
                 });

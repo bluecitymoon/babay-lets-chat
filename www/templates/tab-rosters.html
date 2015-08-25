@@ -11,7 +11,7 @@
             </div>
             <ion-item class="item-avatar item-icon-right" ng-repeat="room in rooms"
                       type="item-text-wrap"
-                      ng-click="openChatDialog(room, 'room')">
+                      ng-click="openChatDialog(room, 'groupchat')">
                 <img ng-src="{{room.avatar}}" style="border-radius: 5px">
                 <span class="badge badge-assertive" ng-if="room.unread > 0">{{room.unread}}</span>
 
@@ -31,7 +31,7 @@
             </div>
             <ion-item class="item-avatar item-icon-right" ng-repeat="roster in rosters"
                       type="item-text-wrap"
-                      ng-click="openChatDialog(roster, 'single')">
+                      ng-click="openChatDialog(roster, 'chat')">
                 <img ng-src="{{roster.avatar}}" style="border: #fff 2px solid">
                 <span class="badge badge-assertive" ng-if="roster.unread > 0">{{roster.unread}}</span>
 

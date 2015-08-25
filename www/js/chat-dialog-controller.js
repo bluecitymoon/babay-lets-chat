@@ -55,7 +55,7 @@ controllers.controller('ChatDetailCtrl', function ($scope, $stateParams, Chats, 
     $scope.sendMessage = function (sendMessageForm) {
 
         switch($scope.type) {
-            case 'single':
+            case 'chat':
 
                 var fromJID = StorageService.get('username') + '@' + interfaceAddress;
 
@@ -75,7 +75,7 @@ controllers.controller('ChatDetailCtrl', function ($scope, $stateParams, Chats, 
                 Chats.saveOrUpdateChat(chatlog);
 
                 break;
-            case 'room':
+            case 'groupchat':
 
                 connection.muc.groupchat(toJID, $scope.input.message);
                 var messageObject = {from: toJID, to: fromJID, content: $scope.input.message, timeString: new Date(), type: 'me'};

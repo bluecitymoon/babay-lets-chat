@@ -47,6 +47,9 @@ var services = angular.module('starter.services', [])
                     targetMessage.from = message.from;
                     targetMessage.type = message.type;
                     targetMessage.title = message.title;
+                    targetMessage.jid = message.jid;
+                    targetMessage.name = message.name;
+
                     if(message.title == '消息通知') {
                         targetMessage.avatar = 'img/hayizeku/lufee.jpg';
                     } else {
