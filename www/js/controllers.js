@@ -10,6 +10,11 @@ controllers.controller('ChatsCtrl', function ($scope, Chats, ChatDialogService, 
     //});
 
     $scope.chats = Chats.loadAllLocalChats();
+    $rootScope.$on('chats-changed', function() {
+        $scope.chats = Chats.loadAllLocalChats();
+
+        $scope.$applyAsync();
+    });
 
     $scope.remove = function (chat) {
         Chats.remove(chat);
@@ -28,6 +33,10 @@ controllers.controller('ChatsCtrl', function ($scope, Chats, ChatDialogService, 
     };
 
     $scope.removeSingleChat = function(chat) {
+
+        $scope.chats = Chats.removeSingleChat(chat);
+
+        $rootScope.$emit('chats-changed');
 
     };
 })

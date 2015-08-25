@@ -5,11 +5,11 @@ var interfaceAddress = '192.168.0.118';
 var snsInterface = 'http://192.168.0.118:8080';
 var currentChat = null;
 var defaultFriendAvatar = 'img/jerry-avatar.jpeg';
+var defaultMyAvatar = 'img/jerry-avatar1.jpeg';
 var currentUserJid = '';
 var currentUserFullJid = '';
 var nick = 'Jerry';
 var groupChatServiceName = 'conference' +'.'+ interfaceAddress;
-
 
 //, 'ui-notification'
 var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'nl2br', 'monospaced.elastic', 'checklist-model']);
@@ -49,6 +49,7 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
                 var joinToGroupReason = $(recievedMessage).find('reason').get();
 
                 if(joinToGroupReason[0] && joinToGroupReason[0].textContent && joinToGroupReason[0].textContent == 'invite-to-group') {
+
                     var inviteFrom  = $(recievedMessage).find('invite').map(function () {
                         return $(this).attr("from");
                     }).get();
@@ -61,7 +62,7 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
                 var body = '';
                 if ((type == "chat" || type == 'groupchat') && elements.length > 0) {
 
-                    body = Strophe.getText(elems[0]) ;
+                    body = Strophe.getText(elements[0]) ;
 
                     if(Utils.getFullJid(from) == currentUserFullJid && type == 'groupchat') {
                         console.debug('recieve my own message');
@@ -72,9 +73,14 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
 
                         MessageService.saveSingleMessageToLocalStorage(message);
 
+                        var chatlog = {from: inviteFrom, type: type, content:  body, title: Utils.getJidHeader(from), avatar: defaultFriendAvatar};
+                        Chats.saveOrUpdateChat(chatlog);
+
                         $rootScope.$emit('receive-new-message', {message: JSON.stringify(message)});
                     }
                 }
+
+                $rootScope.$emit('chats-changed');
 
                 return true;
             };

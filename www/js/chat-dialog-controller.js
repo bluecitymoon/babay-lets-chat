@@ -2,7 +2,7 @@
  * Created by jerry on 17/8/15.
  */
 
-controllers.controller('ChatDetailCtrl', function ($scope, $stateParams, Chats, StorageService, $rootScope, $ionicScrollDelegate, MessageService) {
+controllers.controller('ChatDetailCtrl', function ($scope, $stateParams, Chats, StorageService, $rootScope, $ionicScrollDelegate, MessageService, Utils) {
     $scope.messages = [];
 
     $scope.input = {
@@ -71,6 +71,9 @@ controllers.controller('ChatDetailCtrl', function ($scope, $stateParams, Chats, 
 
                 MessageService.saveSingleMessageToLocalStorage(messageObject);
 
+                var chatlog = {from: currentUserJid, type: 'chat', content:  $scope.input.message, title: Utils.getJidHeader(toJID), avatar: defaultFriendAvatar};
+                Chats.saveOrUpdateChat(chatlog);
+
                 break;
             case 'room':
 
@@ -79,6 +82,8 @@ controllers.controller('ChatDetailCtrl', function ($scope, $stateParams, Chats, 
                 $scope.messages.push(messageObject);
 
                 MessageService.saveSingleMessageToLocalStorage(messageObject);
+                var chatlog = {from: toJID, type: 'groupchat', content:  $scope.input.message, title: Utils.getJidHeader(toJID), avatar: defaultMyAvatar};
+                Chats.saveOrUpdateChat(chatlog);
 
                 break;
             default:

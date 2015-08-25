@@ -2,8 +2,10 @@ var services = angular.module('starter.services', [])
 
     .factory('Chats', function (StorageService) {
 
-        function saveAllLocalChat() {
-            StorageService.set('allchats', JSON.stringify(chats));
+        var removeSingleChat = function(chat) {
+
+            return saveOrUpdateChat(chat, 'delete');
+
         };
 
         var loadAllLocalChats = function () {
@@ -11,7 +13,7 @@ var services = angular.module('starter.services', [])
             return StorageService.getArray('localchats');
         };
 
-        var saveOrUpdateChat = function(message) {
+        var saveOrUpdateChat = function(message, operation) {
 
             var storedChats = StorageService.getArray('localchats');
             var targetMessage = null;
@@ -22,31 +24,48 @@ var services = angular.module('starter.services', [])
                 }
             }
 
-            if(targetMessage) {
+            if (operation && operation === 'delete') {
 
-                targetMessage.lastText = message.content;
+                if(targetMessage) {
+
+                    var index = storedChats.indexOf(targetMessage);
+                    if(index > -1) {
+                        storedChats.splice(targetMessage);
+                    }
+                }
 
             } else {
 
-                targetMessage = {};
-                targetMessage.lastText = message.content;
-                targetMessage.from = message.from;
-                targetMessage.type = message.type;
-                targetMessage.title = message.title;
-                if(message.title == '消息通知') {
-                    targetMessage.avatar = 'img/hayizeku/lufee.jpg';
-                }
+                if(targetMessage) {
 
-                storedChats.push(targetMessage);
+                    targetMessage.lastText = message.content;
+
+                } else {
+
+                    targetMessage = {};
+                    targetMessage.lastText = message.content;
+                    targetMessage.from = message.from;
+                    targetMessage.type = message.type;
+                    targetMessage.title = message.title;
+                    if(message.title == '消息通知') {
+                        targetMessage.avatar = 'img/hayizeku/lufee.jpg';
+                    } else {
+                        targetMessage.avatar = defaultFriendAvatar;
+                    }
+
+                    storedChats.push(targetMessage);
+                }
             }
 
             StorageService.setObject('localchats', storedChats);
+
+            return storedChats;
         };
 
         return {
-            saveAllLocalChat: saveAllLocalChat,
             loadAllLocalChats: loadAllLocalChats,
-            saveOrUpdateChat: saveOrUpdateChat
+            saveOrUpdateChat: saveOrUpdateChat,
+            removeSingleChat: removeSingleChat
         };
     })
 
