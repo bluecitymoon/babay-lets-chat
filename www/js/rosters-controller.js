@@ -1,8 +1,9 @@
 controllers.controller('RosterCtrl', function ($scope, StorageService, $ionicLoading, $rootScope, $ionicModal, ChatDialogService, $state, $ionicActionSheet) {
 
     $scope.$on('$ionicView.enter', function() {
-        console.log('UserMessages $ionicView.enter');
         $scope.rooms = StorageService.getArray(currentUserJid + '_' + 'rooms');
+
+        $scope.rosters = StorageService.getArray(currentUserJid + '_rosters');
 
     });
 
@@ -16,14 +17,7 @@ controllers.controller('RosterCtrl', function ($scope, StorageService, $ionicLoa
 
         $scope.$apply();
 
-        StorageService.setObject('rosters', $scope.rosters);
-
-    });
-
-    $rootScope.$on('rooms-loaded', function(e, data) {
-        $scope.rooms = data.rooms;
-
-        $scope.$apply();
+        StorageService.setObject(currentUserJid + '_rosters', $scope.rosters);
 
     });
 
@@ -83,7 +77,7 @@ controllers.controller('RosterCtrl', function ($scope, StorageService, $ionicLoa
     $scope.removeSingleRoster = function(jid) {
 
         connection.roster.remove(jid, function(data) {
-            alert(JSON.stringify(data));
+
         });
 
         $rootScope.$emit('reload-roster');

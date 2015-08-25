@@ -37,5 +37,10 @@ controllers.controller('ChatsCtrl', function ($scope, Chats, ChatDialogService, 
         };
 
         $scope.username = StorageService.get('username');
+        $scope.roomname = '';
+
+        $scope.saveConfiguration = function (username) {
+            StorageService.set('username', username);
+        };
 
     });

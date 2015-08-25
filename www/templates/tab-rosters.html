@@ -9,7 +9,7 @@
             <div class="item item-divider" ng-if="rooms.length > 0">
                 我的房间
             </div>
-            <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="room in rooms"
+            <ion-item class="item-avatar item-icon-right" ng-repeat="room in rooms"
                       type="item-text-wrap"
                       ng-click="openChatDialog(room, 'room')">
                 <img ng-src="{{room.avatar}}" style="border-radius: 5px">
@@ -29,7 +29,7 @@
             <div class="item item-divider" ng-if="rosters.length > 0">
                 我的邻居
             </div>
-            <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="roster in rosters"
+            <ion-item class="item-avatar item-icon-right" ng-repeat="roster in rosters"
                       type="item-text-wrap"
                       ng-click="openChatDialog(roster, 'single')">
                 <img ng-src="{{roster.avatar}}" style="border: #fff 2px solid">

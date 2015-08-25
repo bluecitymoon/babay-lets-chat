@@ -80,10 +80,14 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
             };
 
             var loadRoster = function(roster) {
+
                 angular.forEach(roster, function(value) {
                     value.avatar = defaultFriendAvatar;
                 });
+
                 $rootScope.$emit('roster-loaded', {roster: roster});
+
+                StorageService.setObject(currentUserJid + '_rosters', roster);
             };
 
             $rootScope.$on('reload-roster', function() {

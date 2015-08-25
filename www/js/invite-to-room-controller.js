@@ -7,7 +7,7 @@ controllers.controller('InviteMyFriendToRoomCtrl', function ($scope, $ionicHisto
     var roomJid = $stateParams.roomjid;
     console.debug('inviting user to the room ' + roomJid);
 
-    $scope.rosters = StorageService.getObject('rosters');
+    $scope.rosters = StorageService.getObject(currentUserJid + '_rosters');
 
     this.nick = '';
 
