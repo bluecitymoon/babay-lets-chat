@@ -2,19 +2,24 @@ services.factory('Utils', function () {
 
     function getFullJid(longestJid) {
 
-        var splittedElements = longestJid.split('/');
-        var fullJid = splittedElements[0];
-
-        return fullJid;
+        return splitStringWith(longestJid, '/');
     };
 
     function getJidHeader(longestJid) {
 
-        var splittedElements = longestJid.split('@');
-        var header = splittedElements[0];
-
-        return header;
+        return splitStringWith(longestJid, '@');
     };
+
+    function splitStringWith(string, withStr) {
+
+        if(string) {
+            var splittedElements = string.toString().split(withStr);
+            var firstElement = splittedElements[0];
+
+            return firstElement;
+        }
+        return '';
+    }
 
     return {
         getFullJid: getFullJid,

@@ -8,6 +8,8 @@ controllers.controller('CreateRoomCtrl', function ($scope, $ionicHistory, $ionic
     this.nick = '';
 
     var successCreateCallback = function(response) {
+
+        var newCreatedRoom = {"jid":"秋收起义@conference.121.40.152.11","name":"秋收起义","avatar":"img/group-avatar.jpg"};
         console.debug(response);
     };
     var errorCreateCallback = function(response) {

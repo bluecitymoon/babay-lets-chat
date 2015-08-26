@@ -71,8 +71,8 @@ controllers.controller('ChatDetailCtrl', function ($scope, $stateParams, Chats, 
 
                 MessageService.saveSingleMessageToLocalStorage(messageObject);
 
-                var chatlog = {from: currentUserJid, type: 'chat', content:  $scope.input.message, title: Utils.getJidHeader(toJID), avatar: defaultFriendAvatar};
-                Chats.saveOrUpdateChat(chatlog);
+                //var chatlog = {jid: toJID, from: currentUserJid, type: 'chat', content:  $scope.input.message, title: Utils.getJidHeader(toJID), avatar: defaultFriendAvatar};
+                //Chats.saveOrUpdateChat(chatlog);
 
                 break;
             case 'groupchat':
@@ -82,8 +82,8 @@ controllers.controller('ChatDetailCtrl', function ($scope, $stateParams, Chats, 
                 $scope.messages.push(messageObject);
 
                 MessageService.saveSingleMessageToLocalStorage(messageObject);
-                var chatlog = {from: toJID, type: 'groupchat', content:  $scope.input.message, title: Utils.getJidHeader(toJID), avatar: defaultMyAvatar};
-                Chats.saveOrUpdateChat(chatlog);
+                //var chatlog = {jid: toJID, from: toJID, type: 'groupchat', content:  $scope.input.message, title: Utils.getJidHeader(toJID), avatar: defaultMyAvatar};
+                //Chats.saveOrUpdateChat(chatlog);
 
                 break;
             default:

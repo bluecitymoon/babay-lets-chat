@@ -1,7 +1,7 @@
 
 var connection = null;
 var connected = false;
-var interfaceAddress = '192.168.0.118';
+var interfaceAddress = '121.40.152.11';
 var snsInterface = 'http://192.168.0.118:8080';
 var currentChat = null;
 var defaultFriendAvatar = 'img/jerry-avatar.jpeg';
@@ -69,11 +69,11 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
                     } else {
 
                         var message = {from: from, content: body, timeString: new Date(), type: 'friend', messageType: type};
-                        console.debug('received: ' + JSON.stringify(message));
+                        console.debug('received: ' + JSON.stringify(message.$$hashKey));
 
                         MessageService.saveSingleMessageToLocalStorage(message);
 
-                        var chatlog = {jid:from, type: type, content: body, title: Utils.getJidHeader(from), name: Utils.getJidHeader(from), avatar: defaultFriendAvatar};
+                        var chatlog = {jid:from, type: type, content: body, title: Utils.getJidHeader(from), name: Utils.getJidHeader(from), avatar: defaultFriendAvatar, unread: false};
                         Chats.saveOrUpdateChat(chatlog);
 
                         $rootScope.$emit('receive-new-message', {message: JSON.stringify(message)});
