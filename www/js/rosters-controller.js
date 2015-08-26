@@ -88,7 +88,7 @@ controllers.controller('RosterCtrl', function ($scope, StorageService, $ionicLoa
         console.debug('opening ' + JSON.stringify(roster));
 
         currentChat = {name: roster.name, from: roster.jid};
-        ChatDialogService.init('templates/chat-detail.html', roster.type, $scope).then(
+        ChatDialogService.init('templates/chat-detail.html', chatType, $scope).then(
             function(modal) {
                 modal.show();
         });

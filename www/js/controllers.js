@@ -23,8 +23,6 @@ controllers.controller('ChatsCtrl', function ($scope, Chats, ChatDialogService, 
 
     $scope.openChatDialog = function(roster) {
 
-        console.debug('opening ' + JSON.stringify(roster));
-
         if (roster.type && roster.type != 'info') {
 
             currentChat = {name: roster.name, from: Utils.getFullJid(roster.jid)};

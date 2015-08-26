@@ -239,3 +239,7 @@ a.autolinker {
     right: 0;
     top: 0;
 }
+
+.send-button {
+    color: #0c63ee !important;
+}
