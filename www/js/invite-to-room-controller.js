@@ -1,4 +1,4 @@
-controllers.controller('InviteMyFriendToRoomCtrl', function ($scope, $ionicHistory, $ionicLoading, $rootScope, $stateParams, StorageService, ChatRoomService) {
+controllers.controller('InviteMyFriendToRoomCtrl', function ($scope, $ionicHistory, $ionicLoading, $rootScope, $stateParams, StorageService, ChatRoomService, Utils) {
 
     $scope.goback = function () {
         $ionicHistory.goBack();
@@ -25,8 +25,6 @@ controllers.controller('InviteMyFriendToRoomCtrl', function ($scope, $ionicHisto
 
         angular.forEach($scope.selectedJids, function(jid, index) {
 
-            //connection.muc.directInvite(roomJid, jid);
-
             ChatRoomService.singleInvite(jid, roomJid);
 
         });
@@ -34,5 +32,9 @@ controllers.controller('InviteMyFriendToRoomCtrl', function ($scope, $ionicHisto
         connection.muc.multipleInvites(roomJid, $scope.selectedJids, 'invite-to-group');
 
         $ionicLoading.hide();
+
+        Utils.alert("已成功发出邀请", function() {
+            $scope.goback();
+        });
     };
 });

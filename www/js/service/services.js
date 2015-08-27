@@ -106,12 +106,10 @@ var services = angular.module('starter.services', [])
             }).success(function (response, status, headers, config) {
 
                 console.debug(response);
-                $rootScope.$emit('flights-loaded', {flights: response});
 
             }).error(function (response, status, headers, config) {
 
                 console.debug(response);
-                $rootScope.$emit('flights-loaded', {flights: []});
             });
         };
 

@@ -9,10 +9,11 @@ var defaultMyAvatar = 'img/jerry-avatar1.jpeg';
 var currentUserJid = '';
 var currentUserFullJid = '';
 var nick = 'Jerry';
+var mode = 'DEBUG';
 var groupChatServiceName = 'conference' +'.'+ interfaceAddress;
 
 //, 'ui-notification'
-var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'nl2br', 'monospaced.elastic', 'checklist-model']);
+var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'nl2br', 'monospaced.elastic', 'checklist-model', 'angularMoment']);
 
     app.filter('nl2br', ['$filter',
         function($filter) {
@@ -62,13 +63,18 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
                 var body = '';
                 if ((type == "chat" || type == 'groupchat') && elements.length > 0) {
 
+                    var nickname = '';
+                    if(type == 'groupchat') {
+                        nickname =  Utils.getGroupParticipantNickName(from);
+                    }
+
                     body = Strophe.getText(elements[0]) ;
 
-                    if(Utils.getFullJid(from) == currentUserFullJid && type == 'groupchat') {
+                    if(type == 'groupchat' && nickname == currentUserJid) {
                         console.debug('recieve my own message');
                     } else {
 
-                        var message = {from: from, content: body, timeString: new Date(), type: 'friend', messageType: type};
+                        var message = {from: from, nick: nickname, content: body, date: new Date(), type: 'friend', messageType: type};
                         console.debug('received: ' + JSON.stringify(message.$$hashKey));
 
                         MessageService.saveSingleMessageToLocalStorage(message);
@@ -281,3 +287,21 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
         $urlRouterProvider.otherwise('/tab/rosters');
 
     });
+
+moment.locale('en', {
+    relativeTime: {
+        future: "在 %s",
+        past: "%s 之前",
+        s: "%d 秒",
+        m: "一分钟",
+        mm: "%d 分钟",
+        h: "一小时",
+        hh: "%d 小时",
+        d: "一天",
+        dd: "%d 天",
+        M: "一个月",
+        MM: "%d 月",
+        y: "一年",
+        yy: "%d 年"
+    }
+});

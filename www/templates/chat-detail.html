@@ -19,7 +19,7 @@
                         </div>
 
                         <div class="message-detail">
-                            <span class="bold">{{message.username}}</span> <span am-time-ago="message.date"></span>
+                            <span am-time-ago="message.date" class="time-ago"></span>
                         </div>
 
                     </div>
@@ -31,10 +31,10 @@
                         <div class="message" ng-bind-html="message.content | nl2br" autolinker>
                         </div>
 
-                        <!--
                         <div class="message-detail">
-                            <span class="bold">{{message.jid}}</span> <span am-time-ago="message.date"></span>
-                        </div> -->
+                              <span class="bold nickname">{{message.nick}}</span>
+                              <span am-time-ago="message.date" class="time-ago"></span>
+                        </div>
 
                     </div>
                 </div>

@@ -66,7 +66,7 @@ controllers.controller('ChatDetailCtrl', function ($scope, $stateParams, Chats, 
 
                 connection.send(reply);
 
-                var messageObject = {from: toJID, to: fromJID, content: $scope.input.message, timeString: new Date(), type: 'me'};
+                var messageObject = {from: toJID, to: fromJID, content: $scope.input.message, date: new Date(), type: 'me'};
                 $scope.messages.push(messageObject);
 
                 MessageService.saveSingleMessageToLocalStorage(messageObject);
@@ -78,7 +78,7 @@ controllers.controller('ChatDetailCtrl', function ($scope, $stateParams, Chats, 
             case 'groupchat':
 
                 connection.muc.groupchat(toJID, $scope.input.message);
-                var messageObject = {from: toJID, to: fromJID, content: $scope.input.message, timeString: new Date(), type: 'me'};
+                var messageObject = {from: toJID, to: fromJID, content: $scope.input.message, date: new Date(), type: 'me'};
                 $scope.messages.push(messageObject);
 
                 MessageService.saveSingleMessageToLocalStorage(messageObject);

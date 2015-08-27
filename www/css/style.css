@@ -243,3 +243,12 @@ a.autolinker {
 .send-button {
     color: #0c63ee !important;
 }
+
+.nickname {
+    font-size: 10px;
+    color: #6b46e5;
+}
+
+.time-ago {
+    font-size: 8px;
+}
