@@ -43,9 +43,19 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
 
             var onMessage = function (recievedMessage){
 
+                console.debug(recievedMessage);
+
                 var from = recievedMessage.getAttribute('from');
                 var type = recievedMessage.getAttribute('type');
                 var elements = recievedMessage.getElementsByTagName('body');
+
+                var stamp = new Date();
+                if(recievedMessage.getElementsByTagName('delay') && recievedMessage.getElementsByTagName('delay').length == 1) {
+
+                    stamp = recievedMessage.getElementsByTagName('delay')[0].getAttribute('stamp');
+                    console.debug(stamp);
+
+                }
 
                 var joinToGroupReason = $(recievedMessage).find('reason').get();
 
@@ -71,11 +81,10 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
                     body = Strophe.getText(elements[0]) ;
 
                     if(type == 'groupchat' && nickname == currentUserJid) {
-                        console.debug('recieve my own message');
+                        console.debug('receive my own message, ignore it.');
                     } else {
 
-                        var message = {from: from, nick: nickname, content: body, date: new Date(), type: 'friend', messageType: type};
-                        console.debug('received: ' + JSON.stringify(message.$$hashKey));
+                        var message = {from: from, nick: nickname, content: body, date: stamp, type: 'friend', messageType: type};
 
                         MessageService.saveSingleMessageToLocalStorage(message);
 

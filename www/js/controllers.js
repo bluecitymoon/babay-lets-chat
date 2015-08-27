@@ -1,6 +1,6 @@
 var controllers = angular.module('starter.controllers', []);
 
-controllers.controller('ChatsCtrl', function ($scope, Chats, ChatDialogService, $rootScope, Utils) {
+controllers.controller('ChatsCtrl', function ($scope, Chats, ChatDialogService, $rootScope, Utils, StorageService) {
     // With the new view caching in Ionic, Controllers are only called
     // when they are recreated or on app start, instead of every page change.
     // To listen for when this page is active (for example, to refresh data),
@@ -8,6 +8,22 @@ controllers.controller('ChatsCtrl', function ($scope, Chats, ChatDialogService, 
     //
     //$scope.$on('$ionicView.enter', function(e) {
     //});
+
+    $scope.cleanupChatHistory = function() {
+        var localchats = StorageService.getArray("localchats");
+        angular.forEach(localchats, function(chat, i) {
+
+            try {
+
+                if(chat.type == 'chat' || chat.type == 'groupchat') {
+
+                }
+            } catch(e) {
+                //ignore it
+            }
+        });
+
+    };
 
     $scope.chats = Chats.loadAllLocalChats();
     $rootScope.$on('chats-changed', function() {
@@ -19,7 +35,6 @@ controllers.controller('ChatsCtrl', function ($scope, Chats, ChatDialogService, 
     $scope.remove = function (chat) {
         Chats.remove(chat);
     };
-
 
     $scope.openChatDialog = function(roster) {
 
