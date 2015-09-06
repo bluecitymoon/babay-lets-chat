@@ -17,6 +17,22 @@
                 <textarea ng-model="post.content" style="width: 100%" value="" placeholder="此处可以输入很多话"
                           required minlength="1" maxlength="1500" msd-elastic="\n"></textarea>
             </label>
+
+            <br>
+
+            <form name="form">
+                <div class="button" ngf-select ng-model="files" ngf-multiple="true">Select</div>
+               <!-- <div class="button select-picture-button padding" ngf-select ng-model="files" name="files" ngf-pattern="'image/*"
+                     accept="image/*" ngf-max-size="20MB" ngf-min-height="100">
+
+                    <i class="ion-ios-camera-outline"></i>
+                </div> -->
+
+
+                <img ng-repeat="file in files" ngf-src="file" class="padding"
+                     style="max-height: 100px; max-width: 100px; border-radius: 5px">
+                <button type="submit" ng-click="justPostIt()">submit</button>
+            </form>
         </div>
     </ion-content>
 </ion-view>

@@ -11,7 +11,7 @@ var mode = 'DEBUG';
 var groupChatServiceName = 'conference' + '.' + interfaceAddress;
 
 //, 'ui-notification'
-var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'nl2br', 'monospaced.elastic', 'checklist-model', 'angularMoment']);
+var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'nl2br', 'monospaced.elastic', 'checklist-model', 'angularMoment', 'ngFileUpload']);
 
 app.filter('nl2br', ['$filter',
     function ($filter) {
