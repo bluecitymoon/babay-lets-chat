@@ -1,0 +1,22 @@
+<ion-view title="发布">
+    <ion-nav-buttons side="left">
+        <div class="button button-clear" ng-click="goback()">
+            取消
+        </div>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <button class="button button-clear" ng-click="justPostIt()" ng-disabled="!post.content || post.content === ''">
+            发布
+        </button>
+    </ion-nav-buttons>
+    <ion-content>
+        <br>
+
+        <div class="list">
+            <label class="item-input-wrapper" style="height: 100%">
+                <textarea ng-model="post.content" style="width: 100%" value="" placeholder="此处可以输入很多话"
+                          required minlength="1" maxlength="1500" msd-elastic="\n"></textarea>
+            </label>
+        </div>
+    </ion-content>
+</ion-view>

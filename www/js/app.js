@@ -1,10 +1,9 @@
 var connection = null;
 var connected = false;
 var interfaceAddress = '121.40.152.11';
-var snsInterface = 'http://192.168.0.118:8080';
+var snsInterface = 'http://192.168.0.120:8080';
 var currentChat = null;
 var defaultFriendAvatar = 'img/jerry-avatar.jpeg';
-var defaultMyAvatar = 'img/jerry-avatar1.jpeg';
 var currentUserJid = '';
 var currentUserFullJid = '';
 var nick = 'Jerry';
@@ -166,9 +165,9 @@ app.constant('BOSH_URL', 'http://' + interfaceAddress + ':7070/http-bind/')
 
             if (!connected) {
 
-                $ionicLoading.show({
-                    template: '<ion-spinner icon=\"spiral\"></ion-spinner>正在登录'
-                });
+                //$ionicLoading.show({
+                //    template: '<ion-spinner icon=\"spiral\"></ion-spinner>正在登录'
+                //});
 
                 connection = new Strophe.Connection(BOSH_URL);
                 var username = StorageService.get('username');
@@ -312,8 +311,14 @@ app.constant('BOSH_URL', 'http://' + interfaceAddress + ':7070/http-bind/')
             })
             .state('posts', {
                 url: '/posts',
-                templateUrl: 'templates/tab-account.html',
+                templateUrl: 'templates/tab-posts.html',
                 controller: 'PostsCtrl'
+            })
+
+            .state('new-post-page', {
+                url: '/newpost',
+                templateUrl: 'templates/sns/new-post.html',
+                controller: 'NewPostCtrl'
             });
 
         // if none of the above states are matched, use this as the fallback

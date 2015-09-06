@@ -56,7 +56,7 @@ controllers.controller('ChatsCtrl', function ($scope, Chats, ChatDialogService, 
 
     };
 })
-    .controller('AccountCtrl', function ($scope, $window, StorageService, $state) {
+    .controller('AccountCtrl', function ($scope, $window, StorageService, $state, $ionicHistory) {
         $scope.settings = {
             enableFriends: true
         };

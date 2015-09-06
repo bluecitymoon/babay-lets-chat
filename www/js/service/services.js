@@ -119,6 +119,31 @@ var services = angular.module('starter.services', [])
         };
     })
 
+    .factory('PostService', function($http) {
+
+        function userPost(post) {
+
+            post.createDate = new Date();
+
+            $http({
+                url: snsInterface + '/api/userPosts',
+                data: post,
+                method: 'POST'
+            }).success(function (response, status, headers, config) {
+
+                console.debug(response);
+
+            }).error(function (response, status, headers, config) {
+
+                console.debug(response);
+            });
+        }
+
+        return {
+            userPost: userPost
+        }
+    })
+
     .factory('MessageService', function (StorageService, Utils) {
         var messages = [];
 
