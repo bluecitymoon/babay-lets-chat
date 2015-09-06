@@ -56,7 +56,7 @@ controllers.controller('ChatsCtrl', function ($scope, Chats, ChatDialogService, 
 
     };
 })
-    .controller('AccountCtrl', function ($scope, $window, StorageService) {
+    .controller('AccountCtrl', function ($scope, $window, StorageService, $state) {
         $scope.settings = {
             enableFriends: true
         };
@@ -66,6 +66,10 @@ controllers.controller('ChatsCtrl', function ($scope, Chats, ChatDialogService, 
 
         $scope.saveConfiguration = function (username) {
             StorageService.set('username', username);
+        };
+
+        $scope.goToPosts = function() {
+            $state.go('posts');
         };
 
     });

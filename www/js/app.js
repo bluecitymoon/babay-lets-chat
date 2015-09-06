@@ -1,4 +1,3 @@
-
 var connection = null;
 var connected = false;
 var interfaceAddress = '121.40.152.11';
@@ -10,23 +9,23 @@ var currentUserJid = '';
 var currentUserFullJid = '';
 var nick = 'Jerry';
 var mode = 'DEBUG';
-var groupChatServiceName = 'conference' +'.'+ interfaceAddress;
+var groupChatServiceName = 'conference' + '.' + interfaceAddress;
 
 //, 'ui-notification'
 var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'nl2br', 'monospaced.elastic', 'checklist-model', 'angularMoment']);
 
-    app.filter('nl2br', ['$filter',
-        function($filter) {
-            return function(data) {
-                if (!data) return data;
-                var dataAfter = data.replace(/\n\r?/g, '<br />');
+app.filter('nl2br', ['$filter',
+    function ($filter) {
+        return function (data) {
+            if (!data) return data;
+            var dataAfter = data.replace(/\n\r?/g, '<br />');
 
-                return dataAfter;
-            };
-        }
-    ]);
+            return dataAfter;
+        };
+    }
+]);
 
-    app.constant('BOSH_URL', 'http://' + interfaceAddress + ':7070/http-bind/')
+app.constant('BOSH_URL', 'http://' + interfaceAddress + ':7070/http-bind/')
     .constant('interface_address', interfaceAddress)
 
     .run(function ($ionicPlatform, BOSH_URL, StorageService, $ionicLoading, MessageService, $rootScope, Utils, StartupService, Chats) {
@@ -41,7 +40,7 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
                 StatusBar.styleLightContent();
             }
 
-            var onMessage = function (recievedMessage){
+            var onMessage = function (recievedMessage) {
 
                 console.debug(recievedMessage);
 
@@ -50,7 +49,7 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
                 var elements = recievedMessage.getElementsByTagName('body');
 
                 var stamp = new Date();
-                if(recievedMessage.getElementsByTagName('delay') && recievedMessage.getElementsByTagName('delay').length == 1) {
+                if (recievedMessage.getElementsByTagName('delay') && recievedMessage.getElementsByTagName('delay').length == 1) {
 
                     stamp = recievedMessage.getElementsByTagName('delay')[0].getAttribute('stamp');
                     console.debug(stamp);
@@ -59,13 +58,18 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
 
                 var joinToGroupReason = $(recievedMessage).find('reason').get();
 
-                if(joinToGroupReason[0] && joinToGroupReason[0].textContent && joinToGroupReason[0].textContent == 'invite-to-group') {
+                if (joinToGroupReason[0] && joinToGroupReason[0].textContent && joinToGroupReason[0].textContent == 'invite-to-group') {
 
-                    var inviteFrom  = $(recievedMessage).find('invite').map(function () {
+                    var inviteFrom = $(recievedMessage).find('invite').map(function () {
                         return $(this).attr("from");
                     }).get();
 
-                    var message = {from: inviteFrom, type: 'info', content:  inviteFrom + '邀请你加入了' + from, title: '消息通知'};
+                    var message = {
+                        from: inviteFrom,
+                        type: 'info',
+                        content: inviteFrom + '邀请你加入了' + from,
+                        title: '消息通知'
+                    };
                     Chats.saveOrUpdateChat(message);
 
                 }
@@ -74,21 +78,36 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
                 if ((type == "chat" || type == 'groupchat') && elements.length > 0) {
 
                     var nickname = '';
-                    if(type == 'groupchat') {
-                        nickname =  Utils.getGroupParticipantNickName(from);
+                    if (type == 'groupchat') {
+                        nickname = Utils.getGroupParticipantNickName(from);
                     }
 
-                    body = Strophe.getText(elements[0]) ;
+                    body = Strophe.getText(elements[0]);
 
-                    if(type == 'groupchat' && nickname == currentUserJid) {
+                    if (type == 'groupchat' && nickname == currentUserJid) {
                         console.debug('receive my own message, ignore it.');
                     } else {
 
-                        var message = {from: from, nick: nickname, content: body, date: stamp, type: 'friend', messageType: type};
+                        var message = {
+                            from: from,
+                            nick: nickname,
+                            content: body,
+                            date: stamp,
+                            type: 'friend',
+                            messageType: type
+                        };
 
                         MessageService.saveSingleMessageToLocalStorage(message);
 
-                        var chatlog = {jid:from, type: type, content: body, title: Utils.getJidHeader(from), name: Utils.getJidHeader(from), avatar: defaultFriendAvatar, unread: false};
+                        var chatlog = {
+                            jid: from,
+                            type: type,
+                            content: body,
+                            title: Utils.getJidHeader(from),
+                            name: Utils.getJidHeader(from),
+                            avatar: defaultFriendAvatar,
+                            unread: false
+                        };
                         Chats.saveOrUpdateChat(chatlog);
 
                         $rootScope.$emit('receive-new-message', {message: JSON.stringify(message)});
@@ -100,9 +119,9 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
                 return true;
             };
 
-            var loadRoster = function(roster) {
+            var loadRoster = function (roster) {
 
-                angular.forEach(roster, function(value) {
+                angular.forEach(roster, function (value) {
                     value.avatar = defaultFriendAvatar;
                 });
 
@@ -111,11 +130,11 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
                 StorageService.setObject(currentUserJid + '_rosters', roster);
             };
 
-            $rootScope.$on('reload-roster', function() {
+            $rootScope.$on('reload-roster', function () {
                 connection.roster.get(loadRoster);
             });
 
-            $rootScope.$on('load-and-join-rooms', function() {
+            $rootScope.$on('load-and-join-rooms', function () {
 
                 connection.muc.listRooms(groupChatServiceName, function (stanza) {
 
@@ -135,13 +154,13 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
                         roomsTranformed.push(room);
                     });
 
-                    $rootScope.$emit('rooms-loaded', {rooms : roomsTranformed});
+                    $rootScope.$emit('rooms-loaded', {rooms: roomsTranformed});
 
                     StorageService.setObject(currentUserJid + '_' + 'rooms', roomsTranformed);
 
                     console.debug('loaded rooms ' + JSON.stringify(roomsTranformed));
 
-                    }, function () {
+                }, function () {
                 });
             });
 
@@ -286,10 +305,15 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
                 url: '/account',
                 views: {
                     'tab-account': {
-                        templateUrl: 'templates/tab-account.html',
+                        templateUrl: 'templates/sns/tab-sns-navigation.html',
                         controller: 'AccountCtrl'
                     }
                 }
+            })
+            .state('posts', {
+                url: '/posts',
+                templateUrl: 'templates/tab-account.html',
+                controller: 'PostsCtrl'
             });
 
         // if none of the above states are matched, use this as the fallback
