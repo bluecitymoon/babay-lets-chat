@@ -17,14 +17,15 @@ controllers.controller('NewPostCtrl', ['$scope', 'Upload', 'PostService', functi
         };
     });
 
-    $scope.justPostIt = function () {
-        // PostService.userPost($scope.post);
+    $scope.file = null;
+
+    $scope.justPostIt = function ($files) {
 
         console.debug($scope.files);
 
         Upload.upload({
             url: snsInterface + '/api/userPostsWithImages',
-            fields: {'username': $scope.post.jid},
+            fields: {'fileName': 'Hello.jpg'},
             file: $scope.files,
             method: 'POST'
         }).progress(function (evt) {

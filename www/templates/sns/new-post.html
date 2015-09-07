@@ -5,7 +5,8 @@
         </div>
     </ion-nav-buttons>
     <ion-nav-buttons side="right">
-        <button class="button button-clear" ng-click="justPostIt()" ng-disabled="!post.content || post.content === ''">
+        <button class="button button-clear" ng-click="justPostIt($files)"
+                ng-disabled="!post.content || post.content === ''">
             发布
         </button>
     </ion-nav-buttons>
@@ -20,19 +21,26 @@
 
             <br>
 
-            <form name="form">
-                <div class="button" ngf-select ng-model="files" ngf-multiple="true">Select</div>
-               <!-- <div class="button select-picture-button padding" ngf-select ng-model="files" name="files" ngf-pattern="'image/*"
-                     accept="image/*" ngf-max-size="20MB" ngf-min-height="100">
-
-                    <i class="ion-ios-camera-outline"></i>
-                </div> -->
-
+            <form ng-app="starter" ng-controller="NewPostCtrl" name="form">
+                <div class="button select-picture-button padding" ngf-select ng-model="files" ngf-multiple="true"><i
+                        class="ion-ios-camera-outline"></i>
+                </div>
 
                 <img ng-repeat="file in files" ngf-src="file" class="padding"
                      style="max-height: 100px; max-width: 100px; border-radius: 5px">
-                <button type="submit" ng-click="justPostIt()">submit</button>
+
+                <img ngf-src="file" style="max-height: 100px; max-width: 100px; border-radius: 5px">
+
+                <br>
+
+                <div class="row">
+                    <button type="submit" ng-click="justPostIt()" class="button button-calm"><i
+                            class="ion-ios-camera-outline"></i>发布
+                    </button>
+                </div>
             </form>
+
+            <img ngf-src="file">
         </div>
     </ion-content>
 </ion-view>
