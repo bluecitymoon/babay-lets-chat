@@ -1,8 +1,8 @@
-controllers.controller('NewPostCtrl', ['$scope', 'Upload', 'PostService', function ($scope, Upload, PostService) {
+controllers.controller('NewPostCtrl', ['$scope', 'Upload', 'PostService', function ($scope, Upload, PostService, $state, StorageService) {
 
     $scope.post = {
         content: '',
-        jid: currentUserJid,
+        jid: StorageService.get('username'),
         greetCount: 0,
         commentsCount: 0
     };
@@ -11,7 +11,7 @@ controllers.controller('NewPostCtrl', ['$scope', 'Upload', 'PostService', functi
 
         $scope.post = {
             content: '',
-            jid: currentUserJid,
+            jid: StorageService.get('username'),
             greetCount: 0,
             commentsCount: 0
         };
@@ -19,23 +19,39 @@ controllers.controller('NewPostCtrl', ['$scope', 'Upload', 'PostService', functi
 
     $scope.file = null;
 
-    $scope.justPostIt = function ($files) {
+    $scope.justPostIt = function (post) {
 
-        console.debug($scope.files);
+        var successCallback = function(postId) {
 
-        Upload.upload({
-            url: snsInterface + '/api/userPostsWithImages',
-            fields: {'fileName': 'Hello.jpg'},
-            file: $scope.files,
-            method: 'POST'
-        }).progress(function (evt) {
-            var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-            console.log('progress: ' + progressPercentage + '% ');
-        }).success(function (data, status, headers, config) {
-            console.log( 'uploaded. Response: ' + data);
-        }).error(function (data, status, headers, config) {
-            console.log('error status: ' + status);
-        })
+            angular.forEach($scope.files, function(file) {
+
+                Upload.upload({
+
+                    url: snsInterface + '/api/userPostsWithSingleImage',
+                    fields: { postId: postId },
+                    file: file,
+                    method: 'POST'
+
+                }).progress(function (evt) {
+
+                    var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                    console.log('progress: ' + progressPercentage + '% ');
+
+                }).success(function (data, status, headers, config) {
+
+                    console.log( 'uploaded. Response: ' + data);
+
+                }).error(function (data, status, headers, config) {
+
+                    console.log('error status: ' + status);
+                });
+
+                $state.go('posts');
+            });
+        };
+
+        PostService.userPost(post, successCallback);
+
     }
 
 }]);

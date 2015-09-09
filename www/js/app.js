@@ -163,79 +163,79 @@ app.constant('BOSH_URL', 'http://' + interfaceAddress + ':7070/http-bind/')
                 });
             });
 
-            //if (!connected) {
-            //
-            //    //$ionicLoading.show({
-            //    //    template: '<ion-spinner icon=\"spiral\"></ion-spinner>正在登录'
-            //    //});
-            //
-            //    connection = new Strophe.Connection(BOSH_URL);
-            //    var username = StorageService.get('username');
-            //
-            //    currentUserJid = username;
-            //    currentUserFullJid = username + '@' + interfaceAddress;
-            //
-            //    connection.connect(username + '@' + interfaceAddress, username, function (status, error) {
-            //
-            //        switch (status) {
-            //            case Strophe.Status.ERROR:
-            //                alert(error);
-            //                break;
-            //            case Strophe.Status.CONNECTING:
-            //                break;
-            //            case Strophe.Status.CONNFAIL:
-            //                alert(error);
-            //                break;
-            //            case Strophe.Status.AUTHENTICATING:
-            //
-            //                $ionicLoading.show({
-            //                    template: '<ion-spinner icon=\"spiral\"></ion-spinner>正在验证'
-            //                });
-            //                break;
-            //
-            //            case Strophe.Status.AUTHFAIL:
-            //                $ionicLoading.show({
-            //                    template: '<ion-spinner icon=\"spiral\"></ion-spinner>验证失败 ' + error
-            //                });
-            //
-            //                $ionicLoading.hide();
-            //
-            //                break;
-            //            case Strophe.Status.CONNECTED:
-            //
-            //                $ionicLoading.show({
-            //                    template: '<ion-spinner icon=\"spiral\"></ion-spinner>已连接'
-            //                });
-            //                connection.addHandler(onMessage, null, "message", null, null, null);
-            //
-            //                connection.send($pres().tree());
-            //
-            //                connection.muc.init(connection);
-            //
-            //                $ionicLoading.hide();
-            //
-            //                $rootScope.$emit('reload-roster');
-            //                $rootScope.$emit('load-and-join-rooms');
-            //
-            //                break;
-            //
-            //            case Strophe.Status.DISCONNECTED:
-            //                alert('连接已断开');
-            //                break;
-            //            case Strophe.Status.DISCONNECTING:
-            //                break;
-            //            case Strophe.Status.ATTACHED:
-            //                alert(error);
-            //                break;
-            //            case Strophe.Status.REDIRECT:
-            //                alert(error);
-            //                break;
-            //            default:
-            //                break;
-            //        }
-            //    });
-            //
-            //}
+            if (!connected) {
+
+                //$ionicLoading.show({
+                //    template: '<ion-spinner icon=\"spiral\"></ion-spinner>正在登录'
+                //});
+
+                connection = new Strophe.Connection(BOSH_URL);
+                var username = StorageService.get('username');
+
+                currentUserJid = username;
+                currentUserFullJid = username + '@' + interfaceAddress;
+
+                connection.connect(username + '@' + interfaceAddress, username, function (status, error) {
+
+                    switch (status) {
+                        case Strophe.Status.ERROR:
+                            alert(error);
+                            break;
+                        case Strophe.Status.CONNECTING:
+                            break;
+                        case Strophe.Status.CONNFAIL:
+                            alert(error);
+                            break;
+                        case Strophe.Status.AUTHENTICATING:
+
+                            $ionicLoading.show({
+                                template: '<ion-spinner icon=\"spiral\"></ion-spinner>正在验证'
+                            });
+                            break;
+
+                        case Strophe.Status.AUTHFAIL:
+                            $ionicLoading.show({
+                                template: '<ion-spinner icon=\"spiral\"></ion-spinner>验证失败 ' + error
+                            });
+
+                            $ionicLoading.hide();
+
+                            break;
+                        case Strophe.Status.CONNECTED:
+
+                            $ionicLoading.show({
+                                template: '<ion-spinner icon=\"spiral\"></ion-spinner>已连接'
+                            });
+                            connection.addHandler(onMessage, null, "message", null, null, null);
+
+                            connection.send($pres().tree());
+
+                            connection.muc.init(connection);
+
+                            $ionicLoading.hide();
+
+                            $rootScope.$emit('reload-roster');
+                            $rootScope.$emit('load-and-join-rooms');
+
+                            break;
+
+                        case Strophe.Status.DISCONNECTED:
+                            alert('连接已断开');
+                            break;
+                        case Strophe.Status.DISCONNECTING:
+                            break;
+                        case Strophe.Status.ATTACHED:
+                            alert(error);
+                            break;
+                        case Strophe.Status.REDIRECT:
+                            alert(error);
+                            break;
+                        default:
+                            break;
+                    }
+                });
+
+            }
         });
     })
 
@@ -305,7 +305,7 @@ app.constant('BOSH_URL', 'http://' + interfaceAddress + ':7070/http-bind/')
                 views: {
                     'tab-account': {
                         templateUrl: 'templates/sns/tab-sns-navigation.html',
-                        controller: 'AccountCtrl'
+                        controller: 'NavigationCtrl'
                     }
                 }
             })
@@ -315,6 +315,11 @@ app.constant('BOSH_URL', 'http://' + interfaceAddress + ':7070/http-bind/')
                 controller: 'PostsCtrl'
             })
 
+            .state('settings', {
+                url: '/settings',
+                templateUrl: 'templates/setting/setting.html',
+                controller: 'AccountCtrl'
+            })
             .state('new-post-page', {
                 url: '/newpost',
                 templateUrl: 'templates/sns/new-post.html',

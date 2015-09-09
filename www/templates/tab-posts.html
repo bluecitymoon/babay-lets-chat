@@ -10,146 +10,47 @@
         </a>
     </ion-nav-buttons>
     <ion-content>
-        <div class="list card">
+        <div class="list">
+            <div class="card" ng-repeat="post in allPosts">
+                <div class="item item-avatar">
+                    <img src="img/hayizeku/jyoba.jpeg">
 
-            <div class="item item-avatar">
-                <img src="img/hayizeku/jyoba.jpeg">
-                <h2>Marty McFly</h2>
-                <p>November 05, 1955</p>
-            </div>
+                    <h2>{{post.jid}}</h2>
 
-            <div class="item item-body">
-                <img class="full-image" src="img/hayizeku/ace.jpeg">
-                <p>
-                    This is a "Facebook" styled Card. The header is created from a Thumbnail List item,
-                    the content is from a card-body consisting of an image and paragraph text. The footer
-                    consists of tabs, icons aligned left, within the card-footer.
-                </p>
-                <p>
-                    <a href="#" class="subdued">1 赞</a>
-                    <a href="#" class="subdued">5 评论</a>
-                </p>
-            </div>
+                    <p>{{post.createDate}}</p>
+                </div>
 
-            <div class="item tabs tabs-secondary tabs-icon-left">
-                <a class="tab-item" href="#">
-                    <i class="icon ion-thumbsup"></i>
-                    赞
-                </a>
-                <a class="tab-item" href="#">
-                    <i class="icon ion-chatbox"></i>
-                    评论
-                </a>
-                <a class="tab-item" href="#">
-                    <i class="icon ion-share"></i>
-                    分享
-                </a>
-            </div>
+                <div class="item item-body">
+                    <p>
+                        {{post.content}}
+                    </p>
 
-            <div class="item item-avatar">
-                <img src="img/hayizeku/jyoba.jpeg">
-                <h2>Marty McFly</h2>
-                <p>November 05, 1955</p>
-            </div>
-            <div class="item item-body">
-                <img class="full-image" src="img/hayizeku/sheyao.jpeg">
-                <p>
-                    This is a "Facebook" styled Card. The header is created from a Thumbnail List item,
-                    the content is from a card-body consisting of an image and paragraph text. The footer
-                    consists of tabs, icons aligned left, within the card-footer.
-                </p>
-                <p>
-                    <a href="#" class="subdued">1 赞</a>
-                    <a href="#" class="subdued">5 评论</a>
-                </p>
-            </div>
+                    <div ng-repeat="imageLocation in post.imageSrcList">
+                        <img class="full-image" src="{{imageLocation}}">
+                    </div>
 
-            <div class="item tabs tabs-secondary tabs-icon-left">
-                <a class="tab-item" href="#">
-                    <i class="icon ion-thumbsup"></i>
-                    赞
-                </a>
-                <a class="tab-item" href="#">
-                    <i class="icon ion-chatbox"></i>
-                    评论
-                </a>
-                <a class="tab-item" href="#">
-                    <i class="icon ion-share"></i>
-                    分享
-                </a>
-            </div>
+                    <p>
+                        <a href="#" class="subdued">{{post.greetCount}} 赞</a>
+                        <a href="#" class="subdued">{{post.commentsCount}} 评论</a>
+                    </p>
+                </div>
 
-            <div class="item item-avatar">
-                <img src="img/hayizeku/jyoba.jpeg">
-                <h2>Marty McFly</h2>
-                <p>November 05, 1955</p>
-            </div>
-            <div class="item item-body">
-                <img class="full-image" src="img/hayizeku/lufee.jpg">
-                <p>
-                    This is a "Facebook" styled Card. The header is created from a Thumbnail List item,
-                    the content is from a card-body consisting of an image and paragraph text. The footer
-                    consists of tabs, icons aligned left, within the card-footer.
-                </p>
-                <p>
-                    <a href="#" class="subdued">1 赞</a>
-                    <a href="#" class="subdued">5 评论</a>
-                </p>
-            </div>
 
-            <div class="item tabs tabs-secondary tabs-icon-left">
-                <a class="tab-item" href="#">
-                    <i class="icon ion-thumbsup"></i>
-                    赞
-                </a>
-                <a class="tab-item" href="#">
-                    <i class="icon ion-chatbox"></i>
-                    评论
-                </a>
-                <a class="tab-item" href="#">
-                    <i class="icon ion-share"></i>
-                    分享
-                </a>
-            </div>
-
-            <div class="item item-avatar">
-                <img src="img/hayizeku/jyoba.jpeg">
-                <h2>Marty McFly</h2>
-                <p>November 05, 1955</p>
-            </div>
-            <div class="item item-body">
-                <img class="full-image" src="img/hayizeku/jyoba.jpeg">
-                <p>
-                    This is a "Facebook" styled Card. The header is created from a Thumbnail List item,
-                    the content is from a card-body consisting of an image and paragraph text. The footer
-                    consists of tabs, icons aligned left, within the card-footer.
-                </p>
-                <p>
-                    <a href="#" class="subdued">1 赞</a>
-                    <a href="#" class="subdued">5 评论</a>
-                </p>
-            </div>
-
-            <div class="item tabs tabs-secondary tabs-icon-left">
-                <a class="tab-item" href="#">
-                    <i class="icon ion-thumbsup"></i>
-                    赞
-                </a>
-                <a class="tab-item" href="#">
-                    <i class="icon ion-chatbox"></i>
-                    评论
-                </a>
-                <a class="tab-item" href="#">
-                    <i class="icon ion-share"></i>
-                    分享
-                </a>
+                <div class="item tabs tabs-secondary tabs-icon-left">
+                    <a class="tab-item" href="#">
+                        <i class="icon ion-thumbsup"></i>
+                        赞
+                    </a>
+                    <a class="tab-item" href="#">
+                        <i class="icon ion-chatbox"></i>
+                        评论
+                    </a>
+                    <a class="tab-item" href="#">
+                        <i class="icon ion-share"></i>
+                        分享
+                    </a>
+                </div>
             </div>
         </div>
-
-        <div class="item item-input">
-            <input type="text" ng-model="username" class="item-input" placeholder="设置当前登录的帐号">
-            <button type="button" class="button button-calm" ng-click="saveConfiguration(username)">确定</button>
-        </div>
-
     </ion-content>
 </ion-view>

@@ -119,28 +119,50 @@ var services = angular.module('starter.services', [])
         };
     })
 
-    .factory('PostService', function($http) {
+    .factory('PostService', function($http, $rootScope, StorageService) {
 
-        function userPost(post) {
+        function userPost(post, successCallback, failCallback) {
 
             post.createDate = new Date();
 
+            console.debug(post);
+
             $http({
-                url: snsInterface + '/api/userPosts',
-                data: post,
+                url: snsInterface + '/api/singlePost',
+                data: JSON.stringify(post),
                 method: 'POST'
             }).success(function (response, status, headers, config) {
 
                 console.debug(response);
 
+                if(successCallback) {
+                    successCallback(response);
+                }
             }).error(function (response, status, headers, config) {
 
-                console.debug(response);
+                if(failCallback) {
+                    failCallback();
+                }
+            });
+        }
+
+        function loadAllReadablePosts() {
+
+            $http({
+                url: snsInterface + '/api/avaliablePosts',
+                params: {userId: StorageService.get('username')}
+            }).success(function (response, status, headers, config) {
+
+                $rootScope.$emit('avaliable-posts-loaded', {posts: response});
+
+            }).error(function (response, status, headers, config) {
+
             });
         }
 
         return {
-            userPost: userPost
+            userPost: userPost,
+            loadAllReadablePosts: loadAllReadablePosts
         }
     })
 

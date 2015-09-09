@@ -1,0 +1,15 @@
+<ion-view view-title="发现">
+    <ion-nav-buttons side="left">
+        <div class="button button-clear" ng-click="goback()">
+            <i class="ion-arrow-left-c add-contact"></i>
+        </div>
+    </ion-nav-buttons>
+    <ion-content>
+        <div class="list card">
+            <div class="item item-input">
+                <input type="text" ng-model="username" class="item-input" placeholder="设置当前登录的帐号">
+                <button type="button" class="button button-calm" ng-click="saveConfiguration(username)">确定</button>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

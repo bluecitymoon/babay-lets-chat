@@ -57,9 +57,6 @@ controllers.controller('ChatsCtrl', function ($scope, Chats, ChatDialogService, 
     };
 })
     .controller('AccountCtrl', function ($scope, $window, StorageService, $state, $ionicHistory) {
-        $scope.settings = {
-            enableFriends: true
-        };
 
         $scope.username = StorageService.get('username');
         $scope.roomname = '';
@@ -70,6 +67,22 @@ controllers.controller('ChatsCtrl', function ($scope, Chats, ChatDialogService, 
 
         $scope.goToPosts = function() {
             $state.go('posts');
+        };
+
+        $scope.goback = function() {
+            $ionicHistory.goBack();
+        };
+
+    })
+
+    .controller('NavigationCtrl', function ($scope, $state) {
+
+        $scope.goToPosts = function() {
+            $state.go('posts');
+        };
+
+        $scope.gotoSetting = function() {
+            $state.go('settings');
         };
 
     });

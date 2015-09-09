@@ -256,3 +256,7 @@ a.autolinker {
 .select-picture-button {
     font-size: 4rem;
 }
+
+.submit-button {
+    width: 100%;
+}

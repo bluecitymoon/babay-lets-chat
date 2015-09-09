@@ -1,46 +1,54 @@
 <ion-view title="发布">
+    <!--
     <ion-nav-buttons side="left">
         <div class="button button-clear" ng-click="goback()">
             取消
         </div>
     </ion-nav-buttons>
     <ion-nav-buttons side="right">
-        <button class="button button-clear" ng-click="justPostIt($files)"
-                ng-disabled="!post.content || post.content === ''">
+        <button class="button button-clear" ng-disabled="(!post.content || post.content === '') || files.length == 0">
             发布
         </button>
     </ion-nav-buttons>
+-->
     <ion-content>
         <br>
 
         <div class="list">
-            <label class="item-input-wrapper" style="height: 100%">
-                <textarea ng-model="post.content" style="width: 100%" value="" placeholder="此处可以输入很多话"
-                          required minlength="1" maxlength="1500" msd-elastic="\n"></textarea>
-            </label>
+            <form ng-app="starter" ng-controller="NewPostCtrl" name="singlePostForm" id="singlePostForm">
 
-            <br>
+                <label class="item-input-wrapper padding" style="height: 100%">
+                    <textarea ng-model="post.content" style="width: 100%;" value="" placeholder="此处可以输入很多话"
+                              required minlength="1" maxlength="1500" msd-elastic="\n"></textarea>
+                </label>
+                <br>
+                <label class="item-input-wrapper">
+                    <img ng-repeat="file in files" ngf-src="file" class="padding"
+                         style="max-height: 10rem; max-width: 10rem; border-radius: 5px">
 
-            <form ng-app="starter" ng-controller="NewPostCtrl" name="form">
-                <div class="button select-picture-button padding" ngf-select ng-model="files" ngf-multiple="true"><i
-                        class="ion-ios-camera-outline"></i>
-                </div>
-
-                <img ng-repeat="file in files" ngf-src="file" class="padding"
-                     style="max-height: 100px; max-width: 100px; border-radius: 5px">
-
-                <img ngf-src="file" style="max-height: 100px; max-width: 100px; border-radius: 5px">
+                    <div class="button select-picture-button padding" accept="image/*" ngf-keep="true"
+                         ngf-keep-distinct="true" ngf-select ng-model="files" ngf-multiple="true">
+                        <i class="ion-ios-camera-outline"></i>
+                    </div>
+                </label>
 
                 <br>
+                <label class="item-input-wrapper">
 
-                <div class="row">
-                    <button type="submit" ng-click="justPostIt()" class="button button-calm"><i
-                            class="ion-ios-camera-outline"></i>发布
+                    <button type="submit" class="button button-calm submit-button" ng-click="justPostIt(post)">
+                        <b class="color-font-white">发布</b>
                     </button>
-                </div>
-            </form>
+                </label>
 
-            <img ngf-src="file">
+            </form>
         </div>
     </ion-content>
+
+    <!--
+    <div class="bar bar-footer">
+        <button type="submit" class="button button-calm submit-button" ng-click="justPostIt()"><b
+                class="color-font-white">发布</b>
+        </button>
+    </div>
+-->
 </ion-view>
