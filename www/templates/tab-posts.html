@@ -10,6 +10,8 @@
         </a>
     </ion-nav-buttons>
     <ion-content>
+        <ion-refresher pulling-text="下拉刷新" on-refresh="reloadSNS()" pulling-icon="ion-ios-paw-outline">
+        </ion-refresher>
         <div class="list">
             <div class="card" ng-repeat="post in allPosts">
                 <div class="item item-avatar">

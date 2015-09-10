@@ -160,6 +160,7 @@ var services = angular.module('starter.services', [])
                 $rootScope.$emit('avaliable-posts-loaded', {posts: response});
 
                 $ionicLoading.hide();
+                $rootScope.$broadcast('scroll.refreshComplete');
             }).error(function (response, status, headers, config) {
 
             });

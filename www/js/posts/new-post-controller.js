@@ -25,14 +25,13 @@ controllers.controller('NewPostCtrl', ['$scope', 'Upload', 'PostService', '$stat
 
             angular.forEach($scope.files, function(file) {
 
-                console.debug(file.size);
                 Ahdin.compress({
                     sourceFile: file,
                     maxWidth: 800,
                     maxHeight:800,
                     quality: 0.5
                 }).then(function(compressedBlob) {
-                    console.debug(compressedBlob.size);
+
                     Upload.upload({
 
                         url: snsInterface + '/api/userPostsWithSingleImage',

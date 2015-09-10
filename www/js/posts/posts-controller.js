@@ -17,7 +17,7 @@ controllers.controller('PostsCtrl', function ($scope, $window, StorageService, $
             template: '<ion-spinner icon=\"spiral\"></ion-spinner>正在载入'
         });
 
-        PostService.loadAllReadablePosts($rootScope);
+        PostService.loadAllReadablePosts();
     });
 
     $rootScope.$on('avaliable-posts-loaded', function(event, data) {
@@ -27,4 +27,8 @@ controllers.controller('PostsCtrl', function ($scope, $window, StorageService, $
         }
 
     });
+
+    $scope.reloadSNS = function() {
+        PostService.loadAllReadablePosts();
+    };
 });
