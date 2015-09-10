@@ -17,14 +17,14 @@
 
                     <h2>{{post.jid}}</h2>
 
-                    <p>{{post.createDate}}</p>
+                    <p am-time-ago="post.createDate" class="time-ago" style="font-size: 0.7rem !important;"></p>
                 </div>
 
                 <div class="item item-body">
-                    <p>
-                        {{post.content}}
-                    </p>
+                    <div ng-bind-html="post.content | nl2br" autolinker>
+                    </div>
 
+                    <br>
                     <div ng-repeat="imageLocation in post.imageSrcList track by $index">
                         <img class="full-image" src="{{imageLocation}}" style="border-radius: 5px">
                     </div>

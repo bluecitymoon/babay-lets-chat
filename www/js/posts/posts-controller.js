@@ -1,4 +1,4 @@
-controllers.controller('PostsCtrl', function ($scope, $window, StorageService, $ionicHistory, $ionicActionSheet, $state, PostService, $rootScope) {
+controllers.controller('PostsCtrl', function ($scope, $window, StorageService, $ionicHistory, $ionicActionSheet, $state, PostService, $rootScope, $ionicLoading) {
 
     $scope.goback = function() {
         $ionicHistory.goBack();
@@ -12,6 +12,10 @@ controllers.controller('PostsCtrl', function ($scope, $window, StorageService, $
 
     $scope.allPosts = [];
     $scope.$on('$ionicView.enter', function () {
+
+        $ionicLoading.show({
+            template: '<ion-spinner icon=\"spiral\"></ion-spinner>正在载入'
+        });
 
         PostService.loadAllReadablePosts($rootScope);
     });

@@ -54,15 +54,16 @@ controllers.controller('NewPostCtrl', ['$scope', 'Upload', 'PostService', '$stat
                         console.log('error status: ' + status);
                     });
 
-                    $state.go('posts');
+
                 });
-
-
             });
+
+            $state.go('posts');
         };
 
-        PostService.userPost(post, successCallback);
-
+        if ($scope.post.content || $scope.files.length > 0) {
+            PostService.userPost(post, successCallback);
+        }
     }
 
 }]);

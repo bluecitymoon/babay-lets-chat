@@ -125,7 +125,7 @@ var services = angular.module('starter.services', [])
         };
     })
 
-    .factory('PostService', function($http, $rootScope, StorageService) {
+    .factory('PostService', function($http, $rootScope, StorageService, $ionicLoading) {
 
         function userPost(post, successCallback, failCallback) {
 
@@ -138,8 +138,6 @@ var services = angular.module('starter.services', [])
                 data: JSON.stringify(post),
                 method: 'POST'
             }).success(function (response, status, headers, config) {
-
-                console.debug(response);
 
                 if(successCallback) {
                     successCallback(response);
@@ -161,6 +159,7 @@ var services = angular.module('starter.services', [])
 
                 $rootScope.$emit('avaliable-posts-loaded', {posts: response});
 
+                $ionicLoading.hide();
             }).error(function (response, status, headers, config) {
 
             });
