@@ -25,7 +25,7 @@
                         {{post.content}}
                     </p>
 
-                    <div ng-repeat="imageLocation in post.imageSrcList">
+                    <div ng-repeat="imageLocation in post.imageSrcList track by $index">
                         <img class="full-image" src="{{imageLocation}}">
                     </div>
 

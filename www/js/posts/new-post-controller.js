@@ -1,4 +1,4 @@
-controllers.controller('NewPostCtrl', ['$scope', 'Upload', 'PostService', function ($scope, Upload, PostService, $state, StorageService) {
+controllers.controller('NewPostCtrl', ['$scope', 'Upload', 'PostService', '$state', 'StorageService', function ($scope, Upload, PostService, $state, StorageService) {
 
     $scope.post = {
         content: '',

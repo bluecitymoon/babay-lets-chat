@@ -76,7 +76,13 @@ var services = angular.module('starter.services', [])
 
         return {
             get: function (key) {
-                return $window.localStorage[key];
+
+                var value = '';
+                try{
+                    value = $window.localStorage[key];
+                } catch(e){}
+
+                return value;
             },
             set: function (key, value) {
                 $window.localStorage[key] = value;
