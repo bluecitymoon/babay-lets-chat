@@ -11,8 +11,10 @@ controllers.controller('PostsCtrl', function ($scope, $window, StorageService, $
     };
 
     $scope.allPosts = [];
+    $scope.$on('$ionicView.enter', function () {
 
-    PostService.loadAllReadablePosts($rootScope);
+        PostService.loadAllReadablePosts($rootScope);
+    });
 
     $rootScope.$on('avaliable-posts-loaded', function(event, data) {
 

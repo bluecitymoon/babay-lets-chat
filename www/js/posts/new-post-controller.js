@@ -1,4 +1,4 @@
-controllers.controller('NewPostCtrl', ['$scope', 'Upload', 'PostService', '$state', 'StorageService', function ($scope, Upload, PostService, $state, StorageService) {
+controllers.controller('NewPostCtrl', ['$scope', 'Upload', 'PostService', '$state', 'StorageService', 'Ahdin', function ($scope, Upload, PostService, $state, StorageService, Ahdin) {
 
     $scope.post = {
         content: '',
@@ -25,28 +25,39 @@ controllers.controller('NewPostCtrl', ['$scope', 'Upload', 'PostService', '$stat
 
             angular.forEach($scope.files, function(file) {
 
-                Upload.upload({
+                console.debug(file.size);
+                Ahdin.compress({
+                    sourceFile: file,
+                    maxWidth: 800,
+                    maxHeight:800,
+                    quality: 0.5
+                }).then(function(compressedBlob) {
+                    console.debug(compressedBlob.size);
+                    Upload.upload({
 
-                    url: snsInterface + '/api/userPostsWithSingleImage',
-                    fields: { postId: postId },
-                    file: file,
-                    method: 'POST'
+                        url: snsInterface + '/api/userPostsWithSingleImage',
+                        fields: { postId: postId },
+                        file: compressedBlob,
+                        method: 'POST'
 
-                }).progress(function (evt) {
+                    }).progress(function (evt) {
 
-                    var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-                    console.log('progress: ' + progressPercentage + '% ');
+                        var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                        console.log('progress: ' + progressPercentage + '% ');
 
-                }).success(function (data, status, headers, config) {
+                    }).success(function (data, status, headers, config) {
 
-                    console.log( 'uploaded. Response: ' + data);
+                        console.log( 'uploaded. Response: ' + data);
 
-                }).error(function (data, status, headers, config) {
+                    }).error(function (data, status, headers, config) {
 
-                    console.log('error status: ' + status);
+                        console.log('error status: ' + status);
+                    });
+
+                    $state.go('posts');
                 });
 
-                $state.go('posts');
+
             });
         };
 
