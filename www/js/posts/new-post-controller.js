@@ -1,8 +1,8 @@
-controllers.controller('NewPostCtrl', ['$scope', 'Upload', 'PostService', '$state', 'StorageService', 'Ahdin', function ($scope, Upload, PostService, $state, StorageService, Ahdin) {
+controllers.controller('NewPostCtrl', ['$scope', 'Upload', 'PostService', '$state', 'StorageService', 'Ahdin', '$rootScope', function ($scope, Upload, PostService, $state, StorageService, Ahdin, $rootScope) {
 
     $scope.post = {
         content: '',
-        jid: StorageService.get('username'),
+        jid: StorageService.getObject('configuration').username,
         greetCount: 0,
         commentsCount: 0
     };
@@ -11,7 +11,7 @@ controllers.controller('NewPostCtrl', ['$scope', 'Upload', 'PostService', '$stat
 
         $scope.post = {
             content: '',
-            jid: StorageService.get('username'),
+            jid: StorageService.getObject('configuration').username,
             greetCount: 0,
             commentsCount: 0
         };
@@ -25,12 +25,7 @@ controllers.controller('NewPostCtrl', ['$scope', 'Upload', 'PostService', '$stat
 
             angular.forEach($scope.files, function(file) {
 
-                Ahdin.compress({
-                    sourceFile: file,
-                    maxWidth: 800,
-                    maxHeight:800,
-                    quality: 0.5
-                }).then(function(compressedBlob) {
+                var uploadImageFile = function(compressedBlob) {
 
                     Upload.upload({
 
@@ -46,18 +41,28 @@ controllers.controller('NewPostCtrl', ['$scope', 'Upload', 'PostService', '$stat
 
                     }).success(function (data, status, headers, config) {
 
-                        console.log( 'uploaded. Response: ' + data);
+                        $rootScope.$emit('image-upload-success', {postId: postId, src: data.fullSrc});
 
                     }).error(function (data, status, headers, config) {
 
                         console.log('error status: ' + status);
                     });
+                };
 
+                //TODO gif no compress
+                Ahdin.compress({
+                    sourceFile: file,
+                    maxWidth: 800,
+                    maxHeight:800,
+                    quality: 0.5
+                }).then(function(compressedBlob) {
 
+                    uploadImageFile(compressedBlob);
                 });
+
+                $state.go('posts');
             });
 
-            $state.go('posts');
         };
 
         if ($scope.post.content || $scope.files.length > 0) {

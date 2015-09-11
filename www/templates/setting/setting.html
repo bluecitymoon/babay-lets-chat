@@ -6,10 +6,28 @@
     </ion-nav-buttons>
     <ion-content>
         <div class="list card">
+
+            <div class="item-avatar item-icon-right" type="item-text-wrap">
+                <img ng-src="{{configuration.avatar}}" style="border: #0067ce 2px solid">
+
+                <h2>{{configuration.nickname}}</h2>
+
+            </div>
+
             <div class="item item-input">
-                <input type="text" ng-model="username" class="item-input" placeholder="设置当前登录的帐号">
+                <input type="text" ng-model="configuration.username" class="item-input" placeholder="设置当前登录的帐号">
+            </div>
+            <div class="item item-input">
+                <input type="text" ng-model="configuration.userId" class="item-input" placeholder="User Id">
+            </div>
+            <div class="item item-input">
+                <input type="text" ng-model="configuration.tokenId" class="item-input" placeholder="Token Id">
+            </div>
+
+            <div class="item">
                 <button type="button" class="button button-calm" ng-click="saveConfiguration(username)">确定</button>
             </div>
+
         </div>
     </ion-content>
 </ion-view>

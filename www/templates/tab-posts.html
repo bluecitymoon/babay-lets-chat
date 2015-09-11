@@ -15,9 +15,9 @@
         <div class="list">
             <div class="card" ng-repeat="post in allPosts">
                 <div class="item item-avatar">
-                    <img src="img/hayizeku/jyoba.jpeg">
+                    <img src="{{post.avatar}}">
 
-                    <h2>{{post.jid}}</h2>
+                    <h2>{{post.nickname}}</h2>
 
                     <p am-time-ago="post.createDate" class="time-ago" style="font-size: 0.7rem !important;"></p>
                 </div>

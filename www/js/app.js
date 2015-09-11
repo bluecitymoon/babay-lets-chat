@@ -1,6 +1,7 @@
 var connection = null;
 var connected = false;
 var interfaceAddress = '121.40.152.11';
+var baseInterfaceAddress = "http://121.40.152.11:8081/";
 var snsInterface = 'http://192.168.0.114:8080';
 var currentChat = null;
 var defaultFriendAvatar = 'img/jerry-avatar.jpeg';
@@ -9,6 +10,7 @@ var currentUserFullJid = '';
 var nick = 'Jerry';
 var mode = 'DEBUG';
 var groupChatServiceName = 'conference' + '.' + interfaceAddress;
+var myInformation = {};
 
 //, 'ui-notification'
 var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'nl2br', 'monospaced.elastic', 'checklist-model', 'angularMoment', 'ngFileUpload', 'ahdin']);
@@ -27,7 +29,7 @@ app.filter('nl2br', ['$filter',
 app.constant('BOSH_URL', 'http://' + interfaceAddress + ':7070/http-bind/')
     .constant('interface_address', interfaceAddress)
 
-    .run(function ($ionicPlatform, BOSH_URL, StorageService, $ionicLoading, MessageService, $rootScope, Utils, StartupService, Chats) {
+    .run(function ($ionicPlatform, BOSH_URL, StorageService, $ionicLoading, MessageService, $rootScope, Utils, StartupService, Chats, UserService) {
 
         $ionicPlatform.ready(function () {
 
@@ -38,6 +40,8 @@ app.constant('BOSH_URL', 'http://' + interfaceAddress + ':7070/http-bind/')
             if (window.StatusBar) {
                 StatusBar.styleLightContent();
             }
+
+            UserService.loadMyInformation();
 
             var onMessage = function (recievedMessage) {
 
@@ -120,13 +124,11 @@ app.constant('BOSH_URL', 'http://' + interfaceAddress + ':7070/http-bind/')
 
             var loadRoster = function (roster) {
 
-                angular.forEach(roster, function (value) {
-                    value.avatar = defaultFriendAvatar;
-                });
-
                 $rootScope.$emit('roster-loaded', {roster: roster});
 
                 StorageService.setObject(currentUserJid + '_rosters', roster);
+
+                UserService.loadRosterAvatars();
             };
 
             $rootScope.$on('reload-roster', function () {

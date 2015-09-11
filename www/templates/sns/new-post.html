@@ -22,15 +22,13 @@
                               required minlength="1" maxlength="1500" msd-elastic="\n"></textarea>
                 </label>
                 <br>
-                <label class="item-input-wrapper">
-                    <img ng-repeat="file in files" ngf-src="file" class="padding"
-                         style="max-height: 10rem; max-width: 10rem; border-radius: 5px">
 
                     <div class="button select-picture-button padding" accept="image/*" ngf-keep="true"
                          ngf-keep-distinct="true" ngf-select ng-model="files" ngf-multiple="true">
                         <i class="ion-ios-camera-outline"></i>
                     </div>
-                </label>
+
+                    <img ng-repeat="file in files" ngf-src="file" class="padding" style="max-height: 10rem; max-width: 10rem; border-radius: 5px">
 
                 <br>
                 <label class="item-input-wrapper">

@@ -1,8 +1,89 @@
 var services = angular.module('starter.services', [])
 
+    .factory('UserService', function (StorageService, Utils, $http) {
+
+        function loadRosterAvatars() {
+
+            var configuration = StorageService.getObject('configuration');
+            var storedRostersKey = configuration.username + '_rosters';
+            var rosters = StorageService.getArray(storedRostersKey);
+            angular.forEach(rosters, function (roster) {
+
+                $http({
+                    url: baseInterfaceAddress + 'ihome/chat/resident',
+                    params: {
+                        tokenId: configuration.tokenId,
+                        residentId: configuration.userId,
+                        phoneNum: Utils.getJidHeader(roster.jid)
+                    }
+                }).success(function (response, status, headers, config) {
+
+                    console.debug(JSON.stringify(response));
+
+                    roster.avatar = response.data.resident.headImg;
+                    roster.nickname = response.data.resident.nickName;
+
+                    StorageService.setObject(storedRostersKey, rosters);
+
+                }).error(function (response, status, headers, config) {
+
+                    console.debug(response);
+                });
+            });
+
+        }
+
+        function loadMyInformation() {
+
+            var configuration = StorageService.getObject('configuration');
+
+            $http({
+                url: baseInterfaceAddress + 'ihome/chat/resident',
+                params: {
+                    tokenId: configuration.tokenId,
+                    residentId: configuration.userId,
+                    phoneNum: configuration.username
+                }
+            }).success(function (response, status, headers, config) {
+
+                configuration.avatar = response.data.resident.headImg;
+                configuration.nickname = response.data.resident.nickName;
+
+                StorageService.setObject('configuration', configuration);
+
+            }).error(function (response, status, headers, config) {
+
+                console.debug(response);
+            });
+        }
+
+        function findUserInformationByJid(jidParam) {
+
+            var configuration = StorageService.getObject('configuration');
+            var storedRostersKey = configuration.username + '_rosters';
+            var rosters = StorageService.getArray(storedRostersKey);
+
+            var roster = null;
+            for (var i = 0; i < rosters.length; i++) {
+                if (rosters[i].jid === jidParam) {
+                    roster = rosters[i];
+                    break;
+                }
+            }
+
+            return roster;
+        }
+
+        return {
+            loadRosterAvatars: loadRosterAvatars,
+            loadMyInformation: loadMyInformation,
+            findUserInformationByJid: findUserInformationByJid
+        };
+    })
+
     .factory('Chats', function (StorageService) {
 
-        var removeSingleChat = function(chat) {
+        var removeSingleChat = function (chat) {
 
             return saveOrUpdateChat(chat, 'delete');
 
@@ -13,7 +94,7 @@ var services = angular.module('starter.services', [])
             return StorageService.getArray('localchats');
         };
 
-        var saveOrUpdateChat = function(message, operation) {
+        var saveOrUpdateChat = function (message, operation) {
 
             var storedChats = StorageService.getArray('localchats');
             var targetMessage = null;
@@ -26,17 +107,17 @@ var services = angular.module('starter.services', [])
 
             if (operation && operation === 'delete') {
 
-                if(targetMessage) {
+                if (targetMessage) {
 
                     var index = storedChats.indexOf(targetMessage);
-                    if(index > -1) {
+                    if (index > -1) {
                         storedChats.splice(targetMessage);
                     }
                 }
 
             } else {
 
-                if(targetMessage) {
+                if (targetMessage) {
 
                     targetMessage.lastText = message.content;
 
@@ -50,7 +131,7 @@ var services = angular.module('starter.services', [])
                     targetMessage.jid = message.jid;
                     targetMessage.name = message.name;
 
-                    if(message.title == '消息通知') {
+                    if (message.title == '消息通知') {
                         targetMessage.avatar = 'img/hayizeku/lufee.jpg';
                     } else {
                         targetMessage.avatar = defaultFriendAvatar;
@@ -78,22 +159,23 @@ var services = angular.module('starter.services', [])
             get: function (key) {
 
                 var value = '';
-                try{
+                try {
                     value = $window.localStorage[key];
-                } catch(e){}
+                } catch (e) {
+                }
 
                 return value;
             },
             set: function (key, value) {
                 $window.localStorage[key] = value;
             },
-            setObject: function(key, value) {
+            setObject: function (key, value) {
                 $window.localStorage[key] = JSON.stringify(value);
             },
-            getObject: function(key) {
+            getObject: function (key) {
                 return JSON.parse($window.localStorage[key] || '{}');
             },
-            getArray: function(key) {
+            getArray: function (key) {
                 return JSON.parse($window.localStorage[key] || '[]');
             }
         };
@@ -102,7 +184,7 @@ var services = angular.module('starter.services', [])
     .factory('ChatRoomService', function ($http, $rootScope, Utils) {
 
 
-        var singleInvite = function(jids, roomName) {
+        var singleInvite = function (jids, roomName) {
 
             var name = Utils.getJidHeader(roomName);
 
@@ -125,7 +207,7 @@ var services = angular.module('starter.services', [])
         };
     })
 
-    .factory('PostService', function($http, $rootScope, StorageService, $ionicLoading) {
+    .factory('PostService', function ($http, $rootScope, StorageService, $ionicLoading, UserService) {
 
         function userPost(post, successCallback, failCallback) {
 
@@ -139,12 +221,13 @@ var services = angular.module('starter.services', [])
                 method: 'POST'
             }).success(function (response, status, headers, config) {
 
-                if(successCallback) {
-                    successCallback(response);
+                $rootScope.$emit('new-post-created-success', {singlePost: response});
+                if (successCallback) {
+                    successCallback(response.id);
                 }
             }).error(function (response, status, headers, config) {
 
-                if(failCallback) {
+                if (failCallback) {
                     failCallback();
                 }
             });
@@ -157,7 +240,32 @@ var services = angular.module('starter.services', [])
                 params: {userId: StorageService.get('username')}
             }).success(function (response, status, headers, config) {
 
-                $rootScope.$emit('avaliable-posts-loaded', {posts: response});
+                if(response) {
+
+                    angular.forEach(response, function(singlePost) {
+
+                        var jid = singlePost.jid;
+                        var roster = UserService.findUserInformationByJid(jid);
+
+                        if(roster) {
+                            singlePost.avatar = roster.avatar;
+                            singlePost.nickname = roster.nickname;
+                        } else {
+                            singlePost.avatar = "img/hayizeku/jyoba.jpeg";
+                            singlePost.nickname = singlePost.jid;
+                        }
+
+                        var configuration = StorageService.getObject("configuration");
+                        if(singlePost.jid == configuration.username) {
+                            singlePost.avatar = configuration.avatar;
+                            singlePost.nickname = configuration.nickname;
+                        }
+                        console.debug(JSON.stringify(singlePost));
+
+                    });
+
+                    $rootScope.$emit('avaliable-posts-loaded', {posts: response});
+                }
 
                 $ionicLoading.hide();
                 $rootScope.$broadcast('scroll.refreshComplete');
@@ -190,7 +298,7 @@ var services = angular.module('starter.services', [])
             var fromJid = message.from;
 
             var items = getMessagesFromSingleFriend(fromJid);
-            if(items.length == 0) {
+            if (items.length == 0) {
                 messages.push({jid: message.from, items: [message]});
             } else {
                 items.push(message);
@@ -198,13 +306,13 @@ var services = angular.module('starter.services', [])
 
         }
 
-        var saveSingleMessageToLocalStorage = function(message) {
+        var saveSingleMessageToLocalStorage = function (message) {
 
-            var messageKey = message.from.match('/')? 'message_' + Utils.getFullJid(message.from) : 'message_' + message.from;
+            var messageKey = message.from.match('/') ? 'message_' + Utils.getFullJid(message.from) : 'message_' + message.from;
 
             var storedMessages = StorageService.getArray(messageKey);
 
-            if(storedMessages.length == 0) {
+            if (storedMessages.length == 0) {
                 storedMessages = [message];
             } else {
                 storedMessages.push(message);
@@ -213,7 +321,7 @@ var services = angular.module('starter.services', [])
             StorageService.setObject(messageKey, storedMessages);
         };
 
-        var getMessagesFromSingleFriendInLocalStorage = function(fullJid) {
+        var getMessagesFromSingleFriendInLocalStorage = function (fullJid) {
 
             return StorageService.getArray('message_' + fullJid);
         };
@@ -261,8 +369,8 @@ var services = angular.module('starter.services', [])
             for (var i = 0; i < rosters.length; i++) {
                 if (rosters[i].jid === fullJid) {
 
-                    var unread = rosters[i].unread? rosters[i].unread : 0;
-                    unread ++;
+                    var unread = rosters[i].unread ? rosters[i].unread : 0;
+                    unread++;
 
                     rosters[i].unread = unread;
 
@@ -272,7 +380,7 @@ var services = angular.module('starter.services', [])
             }
         };
 
-        var clearUnreadCount = function(rosters, jid) {
+        var clearUnreadCount = function (rosters, jid) {
 
             for (var i = 0; i < rosters.length; i++) {
                 if (rosters[i].jid === jid) {
@@ -289,15 +397,15 @@ var services = angular.module('starter.services', [])
             init: init,
             updateUnreadCount: updateBageCount,
             clearUnreadCount: clearUnreadCount
-       };
+        };
     })
 
     .directive('autolinker', ['$timeout',
-        function($timeout) {
+        function ($timeout) {
             return {
                 restrict: 'A',
-                link: function(scope, element, attrs) {
-                    $timeout(function() {
+                link: function (scope, element, attrs) {
+                    $timeout(function () {
                         var eleHtml = element.html();
 
                         if (eleHtml === '') {
@@ -314,7 +422,7 @@ var services = angular.module('starter.services', [])
                         var autolinks = element[0].getElementsByClassName('autolinker');
 
                         for (var i = 0; i < autolinks.length; i++) {
-                            angular.element(autolinks[i]).bind('click', function(e) {
+                            angular.element(autolinks[i]).bind('click', function (e) {
                                 var href = e.target.href;
                                 console.log('autolinkClick, href: ' + href);
 

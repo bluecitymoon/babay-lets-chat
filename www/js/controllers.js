@@ -58,11 +58,10 @@ controllers.controller('ChatsCtrl', function ($scope, Chats, ChatDialogService, 
 })
     .controller('AccountCtrl', function ($scope, $window, StorageService, $state, $ionicHistory) {
 
-        $scope.username = StorageService.get('username');
-        $scope.roomname = '';
+        $scope.configuration = StorageService.getObject('configuration');
 
-        $scope.saveConfiguration = function (username) {
-            StorageService.set('username', username);
+        $scope.saveConfiguration = function () {
+            StorageService.setObject('configuration', $scope.configuration);
         };
 
         $scope.goToPosts = function() {
