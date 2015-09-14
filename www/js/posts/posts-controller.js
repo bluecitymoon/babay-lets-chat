@@ -1,4 +1,4 @@
-controllers.controller('PostsCtrl', function ($scope, $window, StorageService, $ionicHistory, $ionicActionSheet, $state, PostService, $rootScope, $ionicLoading) {
+controllers.controller('PostsCtrl', function ($scope, $window, StorageService, $ionicHistory, $ionicActionSheet, $state, PostService, $rootScope, $ionicLoading, $timeout) {
 
     $scope.goback = function() {
         $ionicHistory.goBack();
@@ -9,6 +9,7 @@ controllers.controller('PostsCtrl', function ($scope, $window, StorageService, $
         $state.go('new-post-page');
 
     };
+
     $ionicLoading.show({
         template: '<ion-spinner icon=\"spiral\"></ion-spinner>正在载入'
     });
@@ -63,4 +64,54 @@ controllers.controller('PostsCtrl', function ($scope, $window, StorageService, $
         $scope.allPosts.unshift(data.singlePost);
 
     });
+
+    $scope.greetPost = function(post) {
+
+        post.greetCount += 32;
+
+        post.disabled = true;
+        PostService.greetPost(post.id);
+        $timeout(function() {
+
+            post.disabled = false;
+
+        }, 10000);
+    };
+
+    $scope.postCommenting = {};
+
+    $scope.comment = {
+        dialogVisible: false,
+        content: ''
+    };
+
+    $scope.closeCommentDialog = function() {
+        $scope.comment.dialogVisible = false;
+    };
+
+    $scope.commentPost = function() {
+
+        $scope.comment.createDate = new Date();
+        $scope.comment.type = 'c';
+        PostService.commentPost($scope.comment, $scope.postCommenting);
+
+    };
+
+    $scope.showCommentDialog = function(post) {
+        $scope.comment.dialogVisible = true;
+
+        $scope.postCommenting = post;
+        //var commentTextArea = document.querySelector('#commentTextArea');
+        //var wrappedElement = angular.element(commentTextArea);
+        //wrappedElement[0].focus();
+
+        //not works
+        $scope.$broadcast('commentDialogOpened');
+
+    };
+
+    $scope.replyComment = function(commentId) {
+        alert('rely me' + commentId);
+    }
+
 });

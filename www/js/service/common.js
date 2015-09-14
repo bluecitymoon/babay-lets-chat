@@ -1,4 +1,4 @@
-services.factory('Utils', function ($ionicPopup) {
+services.factory('Utils', function ($ionicPopup, StorageService) {
 
     function getFullJid(longestJid) {
 
@@ -37,12 +37,23 @@ services.factory('Utils', function ($ionicPopup) {
         if( callback ) {
             alertPopup.then(callback);
         }
+    };
+
+    function getMyAvatar() {
+        var configuration = StorageService.getObject("configuration");
+        if(configuration.avatar) {
+            return configuration.avatar;
+        } else {
+            return 'img/hayizeku/lufee.jpg';
+        }
+
     }
 
     return {
         getFullJid: getFullJid,
         getJidHeader: getJidHeader,
         alert: alert,
-        getGroupParticipantNickName: getGroupParticipantNickName
+        getGroupParticipantNickName: getGroupParticipantNickName,
+        getMyAvatar: getMyAvatar
     };
 });

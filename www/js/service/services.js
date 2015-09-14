@@ -233,6 +233,40 @@ var services = angular.module('starter.services', [])
             });
         }
 
+
+        function commentPost(comment, post, successCallback, failCallback) {
+
+            $http({
+                url: snsInterface + '/api/comment/' + post.id,
+                data: JSON.stringify(comment),
+                method: 'POST'
+            }).success(function (response, status, headers, config) {
+
+                console.debug(response);
+               // $rootScope.$emit('new-post-created-success', {singlePost: response});
+                if (successCallback) {
+                    successCallback(response.id);
+                }
+            }).error(function (response, status, headers, config) {
+
+                if (failCallback) {
+                    failCallback();
+                }
+            });
+        }
+
+        function greetPost(postId) {
+
+            $http({
+                url: snsInterface + '/api/greet/' + postId,
+                method: 'POST'
+            }).success(function (response, status, headers, config) {
+                console.debug(response);
+
+            }).error(function (response, status, headers, config) {
+
+            });
+        }
         function loadAllReadablePosts() {
 
             $http({
@@ -276,7 +310,9 @@ var services = angular.module('starter.services', [])
 
         return {
             userPost: userPost,
-            loadAllReadablePosts: loadAllReadablePosts
+            loadAllReadablePosts: loadAllReadablePosts,
+            greetPost: greetPost,
+            commentPost: commentPost
         }
     })
 

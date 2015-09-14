@@ -27,6 +27,7 @@
                     </div>
 
                     <br>
+
                     <div ng-repeat="imageLocation in post.imageSrcList track by $index">
                         <img class="full-image" src="{{imageLocation}}" style="border-radius: 5px">
                     </div>
@@ -36,23 +37,69 @@
                         <a href="#" class="subdued">{{post.commentsCount}} 评论</a>
                     </p>
                 </div>
+                <div ng-show="post.commentList && post.commentList.length > 0">
+                    <ion-list>
+                        <!--class="item-remove-animate item-avatar"-->
+                        <ion-item ng-repeat="comment in post.commentList"
+                                  class="message-wrapper">
+                            <div ng-if="comment.type === 'r'">
+                                <img class="profile-pic right" ng-src="img/jerry-avatar.jpeg" />
 
+                                <div class="chat-bubble right" ng-click="replyComment(comment.id)">
+                                    <div class="message" ng-bind-html="comment.content | nl2br" autolinker>
+                                    </div>
 
+                                </div>
+                            </div>
+                            <div ng-if="comment.type === 'c'">
+                                <img class="profile-pic left" ng-src="img/jerry-avatar.jpeg"/>
+
+                                <div class="chat-bubble left" ng-click="replyComment(comment.id)">
+                                    <div class="message" ng-bind-html="comment.content | nl2br" autolinker>
+                                    </div>
+                                </div>
+                            </div>
+                        </ion-item>
+                    </ion-list>
+
+                </div>
                 <div class="item tabs tabs-secondary tabs-icon-left">
-                    <a class="tab-item" href="#">
+                    <!--
+                    <a class="tab-item" href="#" ng-click="greetPost(post)">
                         <i class="icon ion-thumbsup"></i>
                         赞
                     </a>
-                    <a class="tab-item" href="#">
+                    -->
+                    <a class="tab-item" href="#" ng-click="greetPost(post)" ng-disabled="post.disabled">
+                        <i class="icon ion-thumbsup"></i>
+                        32个赞
+                    </a>
+                    <a class="tab-item" href="#" ng-click="showCommentDialog(post)">
                         <i class="icon ion-chatbox"></i>
                         评论
                     </a>
+                    <!--
                     <a class="tab-item" href="#">
                         <i class="icon ion-share"></i>
                         分享
                     </a>
+                    -->
                 </div>
             </div>
         </div>
     </ion-content>
+    <form name="commentForm" ng-submit="commentPost(commentForm)" novalidate ng-show="comment.dialogVisible">
+        <ion-footer-bar style="height: auto" class="bar-stable item-input-inset message-footer" keyboard-attach ng-show="comment.dialogVisible">
+            <label class="item-input-wrapper" style="height: 100%">
+                <textarea id="commentTextArea" focus-on="commentDialogOpened" style="width: 80%;" ng-model="comment.content" value="" placeholder="输入你的评论吧~"
+                          required minlength="1" maxlength="1500" msd-elastic="\n"></textarea>
+            </label>
+
+            <div class="footer-btn-wrap">
+                <button class="button button-icon icon ion-android-send footer-btn send-button" type="submit"
+                        ng-disabled="!comment.content || comment.content === ''">
+                </button>
+            </div>
+        </ion-footer-bar>
+    </form>
 </ion-view>

@@ -12,7 +12,7 @@
             <ion-item ng-repeat="message in messages"
                       class="message-wrapper">
                 <div ng-if="message.type === 'me'">
-                    <img class="profile-pic right" ng-src="img/jerry-avatar1.jpeg"/>
+                    <img class="profile-pic right" ng-src="{{myAvatar}}"/>
 
                     <div class="chat-bubble right">
                         <div class="message" ng-bind-html="message.content | nl2br" autolinker>

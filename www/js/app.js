@@ -10,7 +10,6 @@ var currentUserFullJid = '';
 var nick = 'Jerry';
 var mode = 'DEBUG';
 var groupChatServiceName = 'conference' + '.' + interfaceAddress;
-var myInformation = {};
 
 //, 'ui-notification'
 var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'nl2br', 'monospaced.elastic', 'checklist-model', 'angularMoment', 'ngFileUpload', 'ahdin']);
@@ -28,7 +27,17 @@ app.filter('nl2br', ['$filter',
 
 app.constant('BOSH_URL', 'http://' + interfaceAddress + ':7070/http-bind/')
     .constant('interface_address', interfaceAddress)
+    .constant('myAvatar', function(Utils) {
+        var myAvatar = Utils.getMyAvatar();
 
+        return myAvatar;
+    }).directive('focusOn', function () {
+        return function (scope, elem, attr) {
+            scope.$on(attr.focusOn, function (e) {
+                elem[0].focus();
+            });
+        };
+    })
     .run(function ($ionicPlatform, BOSH_URL, StorageService, $ionicLoading, MessageService, $rootScope, Utils, StartupService, Chats, UserService) {
 
         $ionicPlatform.ready(function () {
