@@ -1,5 +1,20 @@
 var services = angular.module('starter.services', [])
 
+    .factory('focus', function ($timeout, $window) {
+        return function (id) {
+            // timeout makes sure that is invoked after any other event has been triggered.
+            // e.g. click events that need to run before the focus or
+            // inputs elements that are in a disabled state but are enabled when those events
+            // are triggered.
+            $timeout(function () {
+                var element = $window.document.getElementById(id);
+                if (element) {
+                    element.focus();
+                }
+            });
+        };
+    })
+
     .factory('UserService', function (StorageService, Utils, $http) {
 
         function loadRosterAvatars() {
@@ -243,7 +258,12 @@ var services = angular.module('starter.services', [])
             }).success(function (response, status, headers, config) {
 
                 console.debug(response);
-               // $rootScope.$emit('new-post-created-success', {singlePost: response});
+                if(response) {
+                    comment.id = response;
+                    comment.postId = post.id;
+                    $rootScope.$emit('new-comment-created-success', {comment: comment});
+                }
+
                 if (successCallback) {
                     successCallback(response.id);
                 }

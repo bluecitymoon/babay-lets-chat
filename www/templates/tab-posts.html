@@ -91,8 +91,8 @@
     <form name="commentForm" ng-submit="commentPost(commentForm)" novalidate ng-show="comment.dialogVisible">
         <ion-footer-bar style="height: auto" class="bar-stable item-input-inset message-footer" keyboard-attach ng-show="comment.dialogVisible">
             <label class="item-input-wrapper" style="height: 100%">
-                <textarea id="commentTextArea" focus-on="commentDialogOpened" style="width: 80%;" ng-model="comment.content" value="" placeholder="输入你的评论吧~"
-                          required minlength="1" maxlength="1500" msd-elastic="\n"></textarea>
+                <textarea id="commentTextArea" style="width: 80%;" ng-model="comment.content" value="" placeholder="输入你的评论吧~"
+                          required minlength="1" maxlength="1500" msd-elastic="\n" autofocus></textarea>
             </label>
 
             <div class="footer-btn-wrap">

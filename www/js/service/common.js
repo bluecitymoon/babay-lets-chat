@@ -49,11 +49,19 @@ services.factory('Utils', function ($ionicPopup, StorageService) {
 
     }
 
+    function getMyJid() {
+        var configuration = StorageService.getObject("configuration");
+        if(configuration.username) {
+            return configuration.username;
+        }
+    }
+
     return {
         getFullJid: getFullJid,
         getJidHeader: getJidHeader,
         alert: alert,
         getGroupParticipantNickName: getGroupParticipantNickName,
-        getMyAvatar: getMyAvatar
+        getMyAvatar: getMyAvatar,
+        getMyJid: getMyJid
     };
 });

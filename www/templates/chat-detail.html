@@ -45,7 +45,7 @@
     <form name="sendMessageForm" ng-submit="sendMessage(sendMessageForm)" novalidate>
         <ion-footer-bar style="height: auto" class="bar-stable item-input-inset message-footer" keyboard-attach>
             <label class="item-input-wrapper" style="height: 100%">
-                <textarea style="width: 80%;" ng-model="input.message" value="" placeholder="此处可以输入很多话"
+                <textarea id="messageTextArea" style="width: 80%;" ng-model="input.message" value="" placeholder="此处可以输入很多话"
                           required minlength="1" maxlength="1500" msd-elastic="\n"></textarea>
             </label>
 

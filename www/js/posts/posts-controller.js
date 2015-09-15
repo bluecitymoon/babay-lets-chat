@@ -1,4 +1,4 @@
-controllers.controller('PostsCtrl', function ($scope, $window, StorageService, $ionicHistory, $ionicActionSheet, $state, PostService, $rootScope, $ionicLoading, $timeout) {
+controllers.controller('PostsCtrl', function ($scope, $window, StorageService, $ionicHistory, $ionicActionSheet, $state, PostService, $rootScope, $ionicLoading, $timeout, Utils) {
 
     $scope.goback = function() {
         $ionicHistory.goBack();
@@ -65,12 +65,32 @@ controllers.controller('PostsCtrl', function ($scope, $window, StorageService, $
 
     });
 
+    $rootScope.$on('new-comment-created-success', function(event, data) {
+
+        var configuration = StorageService.getObject("configuration");
+        data.comment.avatar = configuration.avatar;
+        data.comment.nickname = configuration.nickname;
+
+        for( var i = 0; i < $scope.allPosts.length; i ++ ) {
+            if ( $scope.allPosts[i].id == data.comment.postId ) {
+
+                var comments = $scope.allPosts[i].commentList;
+                if (!comments) comments = [];
+
+                comments.push(data.comment);
+
+                break;
+            }
+        }
+    });
+
     $scope.greetPost = function(post) {
 
         post.greetCount += 32;
 
         post.disabled = true;
         PostService.greetPost(post.id);
+
         $timeout(function() {
 
             post.disabled = false;
@@ -93,7 +113,10 @@ controllers.controller('PostsCtrl', function ($scope, $window, StorageService, $
 
         $scope.comment.createDate = new Date();
         $scope.comment.type = 'c';
+        $scope.comment.jid = Utils.getMyJid();
         PostService.commentPost($scope.comment, $scope.postCommenting);
+
+        $scope.closeCommentDialog();
 
     };
 
@@ -101,12 +124,6 @@ controllers.controller('PostsCtrl', function ($scope, $window, StorageService, $
         $scope.comment.dialogVisible = true;
 
         $scope.postCommenting = post;
-        //var commentTextArea = document.querySelector('#commentTextArea');
-        //var wrappedElement = angular.element(commentTextArea);
-        //wrappedElement[0].focus();
-
-        //not works
-        $scope.$broadcast('commentDialogOpened');
 
     };
 

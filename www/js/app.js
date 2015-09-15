@@ -31,10 +31,17 @@ app.constant('BOSH_URL', 'http://' + interfaceAddress + ':7070/http-bind/')
         var myAvatar = Utils.getMyAvatar();
 
         return myAvatar;
-    }).directive('focusOn', function () {
-        return function (scope, elem, attr) {
-            scope.$on(attr.focusOn, function (e) {
-                elem[0].focus();
+    })
+    .directive('eventFocus', function(focus) {
+        return function(scope, elem, attr) {
+            elem.on(attr.eventFocus, function() {
+                focus(attr.eventFocusId);
+            });
+
+            // Removes bound events in the element itself
+            // when the scope is destroyed
+            scope.$on('$destroy', function() {
+                element.off(attr.eventFocus);
             });
         };
     })

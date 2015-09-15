@@ -14,19 +14,19 @@ controllers.controller('ChatDetailCtrl', function ($scope, $stateParams, Chats, 
         $ionicScrollDelegate.scrollBottom();
     });
 
-    var footerBar; // gets set in $ionicView.enter
-    var scroller;
-    var txtInput;
-    //TODO not triggered
-    $scope.$on('$ionicView.enter', function() {
-        console.log('UserMessages $ionicView.enter');
-
-        $timeout(function() {
-            footerBar = document.body.querySelector('#userMessagesView .bar-footer');
-            scroller = document.body.querySelector('#userMessagesView .scroll-content');
-            txtInput = angular.element(footerBar.querySelector('textarea'));
-        }, 0);
-    });
+    //var footerBar; // gets set in $ionicView.enter
+    //var scroller;
+    //var txtInput;
+    ////TODO not triggered
+    //$scope.$on('$ionicView.enter', function() {
+    //    console.log('UserMessages $ionicView.enter');
+    //
+    //    $timeout(function() {
+    //        footerBar = document.body.querySelector('#userMessagesView .bar-footer');
+    //        scroller = document.body.querySelector('#userMessagesView .scroll-content');
+    //        txtInput = angular.element(footerBar.querySelector('textarea'));
+    //    }, 0);
+    //});
 
     $scope.chat = currentChat;
 
@@ -92,30 +92,33 @@ controllers.controller('ChatDetailCtrl', function ($scope, $stateParams, Chats, 
         }
 
         $scope.input.message = '';
+
         $ionicScrollDelegate.scrollBottom();
+        keepKeyboardOpen();
+
     };
 
     function keepKeyboardOpen() {
-        alert('keepKeyboardOpen');
+        var txtInput = angular.element('#messageTextArea');
         txtInput.one('blur', function() {
             alert('textarea blur, focus back on it');
             txtInput[0].focus();
         });
     }
 
-    $scope.$on('taResize', function(e, ta) {
-        if (!ta) return;
-
-        var taHeight = ta[0].offsetHeight;
-
-        if (!footerBar) return;
-
-        var newFooterHeight = taHeight + 10;
-        newFooterHeight = (newFooterHeight > 44) ? newFooterHeight : 44;
-
-        footerBar.style.height = newFooterHeight + 'px';
-        scroller.style.bottom = newFooterHeight + 'px';
-    });
+    //$scope.$on('taResize', function(e, ta) {
+    //    if (!ta) return;
+    //
+    //    var taHeight = ta[0].offsetHeight;
+    //
+    //    if (!footerBar) return;
+    //
+    //    var newFooterHeight = taHeight + 10;
+    //    newFooterHeight = (newFooterHeight > 44) ? newFooterHeight : 44;
+    //
+    //    footerBar.style.height = newFooterHeight + 'px';
+    //    scroller.style.bottom = newFooterHeight + 'px';
+    //});
 
     $scope.$on('$destroy', function() {
         $scope.modal.remove();
