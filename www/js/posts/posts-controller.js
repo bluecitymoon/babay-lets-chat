@@ -99,6 +99,7 @@ controllers.controller('PostsCtrl', function ($scope, $window, StorageService, $
     };
 
     $scope.postCommenting = {};
+    $scope.commentReplying = {};
 
     $scope.comment = {
         dialogVisible: false,
@@ -118,17 +119,38 @@ controllers.controller('PostsCtrl', function ($scope, $window, StorageService, $
 
         $scope.closeCommentDialog();
 
+        for( var i = 0; i < $scope.allPosts.length; i ++ ) {
+            if ( $scope.allPosts[i].id == $scope.postCommenting.id ) {
+
+                $scope.allPosts[i].showComments = true;
+                break;
+            }
+        }
     };
 
-    $scope.showCommentDialog = function(post) {
+    $scope.showCommentDialog = function(post, comment, replyType) {
         $scope.comment.dialogVisible = true;
 
         $scope.postCommenting = post;
+        if (comment) {
+            $scope.commentReplying = comment;
+        }
 
     };
 
     $scope.replyComment = function(commentId) {
         alert('rely me' + commentId);
-    }
+    };
+
+    $scope.toggleCommentArea = function(postId) {
+
+        for( var i = 0; i < $scope.allPosts.length; i ++ ) {
+            if ( $scope.allPosts[i].id == postId ) {
+
+                $scope.allPosts[i].showComments = !$scope.allPosts[i].showComments;
+                break;
+            }
+        }
+    };
 
 });

@@ -21,53 +21,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="tab-rosters.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/tab-rosters.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-17.416666">
-              <caret line="32" column="43" selection-start-line="32" selection-start-column="43" selection-end-line="32" selection-end-column="43" />
-              <folding>
-                <element signature="n#style#0;n#img#0;n#ion-item#1;n#ion-list#0;n#ion-content#0;n#ion-view#0;n#!!top" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/index.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-14.916667">
-              <caret line="25" column="45" selection-start-line="25" selection-start-column="45" selection-end-line="25" selection-end-column="45" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="app.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/app.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="46" column="6" selection-start-line="46" selection-start-column="6" selection-end-line="46" selection-end-column="6" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="chat-dialog-controller.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/chat-dialog-controller.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="113" column="33" selection-start-line="113" selection-start-column="33" selection-end-line="113" selection-end-column="33" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="new-post-controller.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/posts/new-post-controller.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="60" column="19" selection-start-line="60" selection-start-column="19" selection-end-line="60" selection-end-column="19" />
+              <caret line="2" column="3" selection-start-line="2" selection-start-column="3" selection-end-line="2" selection-end-column="3" />
               <folding />
             </state>
           </provider>
@@ -76,8 +34,8 @@
       <file leaf-file-name="tab-posts.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/tab-posts.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-18.291666">
-              <caret line="94" column="92" selection-start-line="94" selection-start-column="92" selection-end-line="94" selection-end-column="92" />
+            <state vertical-scroll-proportion="-15.0">
+              <caret line="39" column="81" selection-start-line="39" selection-start-column="81" selection-end-line="39" selection-end-column="81" />
               <folding>
                 <element signature="n#style#0;n#i#0;n#a#0;n#ion-nav-buttons#1;n#ion-view#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#img#0;n#div#1;n#div#1;n#div#0;n#div#0;n#ion-content#0;n#ion-view#0;n#!!top" expanded="true" />
@@ -89,11 +47,51 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.54388714">
+              <caret line="24" column="45" selection-start-line="24" selection-start-column="45" selection-end-line="24" selection-end-column="45" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="user-controller.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/user-controller.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="4" column="6" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="invite-to-room-controller.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/invite-to-room-controller.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="36" column="28" selection-start-line="36" selection-start-column="28" selection-end-line="36" selection-end-column="28" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="create-room-controller.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/create-room-controller.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="3" column="28" selection-start-line="3" selection-start-column="22" selection-end-line="3" selection-end-column="28" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="chat-detail.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/chat-detail.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-6.875">
-              <caret line="11" column="16" selection-start-line="11" selection-start-column="16" selection-end-line="11" selection-end-column="16" />
+            <state vertical-scroll-proportion="-24.375">
+              <caret line="39" column="22" selection-start-line="39" selection-start-column="22" selection-end-line="39" selection-end-column="22" />
               <folding>
                 <element signature="n#style#0;n#textarea#0;n#label#0;n#ion-footer-bar#0;n#form#0;n#ion-modal-view#0;n#!!top" expanded="true" />
               </folding>
@@ -121,11 +119,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="posts-controller.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="posts-controller.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/posts/posts-controller.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5849582">
-              <caret line="85" column="0" selection-start-line="85" selection-start-column="0" selection-end-line="85" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="144" column="49" selection-start-line="144" selection-start-column="49" selection-end-line="144" selection-end-column="49" />
               <folding />
             </state>
           </provider>
@@ -184,13 +182,13 @@
         <option value="$PROJECT_DIR$/js/posts/new-post-controller.js" />
         <option value="$PROJECT_DIR$/templates/sns/new-post.html" />
         <option value="$PROJECT_DIR$/js/app.js" />
-        <option value="$PROJECT_DIR$/templates/tab-posts.html" />
-        <option value="$PROJECT_DIR$/index.html" />
-        <option value="$PROJECT_DIR$/templates/chat-detail.html" />
-        <option value="$PROJECT_DIR$/js/chat-dialog-controller.js" />
         <option value="$PROJECT_DIR$/js/service/common.js" />
         <option value="$PROJECT_DIR$/js/service/services.js" />
+        <option value="$PROJECT_DIR$/templates/chat-detail.html" />
+        <option value="$PROJECT_DIR$/js/chat-dialog-controller.js" />
+        <option value="$PROJECT_DIR$/templates/tab-posts.html" />
         <option value="$PROJECT_DIR$/js/posts/posts-controller.js" />
+        <option value="$PROJECT_DIR$/index.html" />
       </list>
     </option>
   </component>
@@ -292,24 +290,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="service" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="www" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="www" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="js" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="posts" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -331,11 +311,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/img" />
       <recent name="$PROJECT_DIR$/templates/setting" />
       <recent name="$PROJECT_DIR$/js/posts" />
       <recent name="$PROJECT_DIR$/templates/sns" />
       <recent name="$PROJECT_DIR$/js/service" />
-      <recent name="$PROJECT_DIR$/js" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/lib" />
@@ -637,20 +617,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/invite-to-room-controller.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="36" column="28" selection-start-line="36" selection-start-column="28" selection-end-line="36" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/create-room-controller.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="3" column="28" selection-start-line="3" selection-start-column="22" selection-end-line="3" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/tab-chats.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-14.375">
@@ -699,14 +665,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="7" column="56" selection-start-line="7" selection-start-column="56" selection-end-line="7" selection-end-column="56" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/user-controller.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="4" column="6" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -780,25 +738,7 @@
         <state vertical-scroll-proportion="-17.416666">
           <caret line="32" column="43" selection-start-line="32" selection-start-column="43" selection-end-line="32" selection-end-column="43" />
           <folding>
-            <element signature="n#style#0;n#img#0;n#ion-item#1;n#ion-list#0;n#ion-content#0;n#ion-view#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-14.916667">
-          <caret line="25" column="45" selection-start-line="25" selection-start-column="45" selection-end-line="25" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/chat-detail.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.875">
-          <caret line="11" column="16" selection-start-line="11" selection-start-column="16" selection-end-line="11" selection-end-column="16" />
-          <folding>
-            <element signature="n#style#0;n#textarea#0;n#label#0;n#ion-footer-bar#0;n#form#0;n#ion-modal-view#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#img#0;n#ion-item#1;n#ion-list#0;n#ion-content#0;n#ion-view#0;n#!!top" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -811,24 +751,49 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/tab-posts.html">
+    <entry file="file://$PROJECT_DIR$/js/service/services.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-18.291666">
-          <caret line="94" column="92" selection-start-line="94" selection-start-column="92" selection-end-line="94" selection-end-column="92" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="253" column="19" selection-start-line="253" selection-start-column="19" selection-end-line="253" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/chat-detail.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-24.375">
+          <caret line="39" column="22" selection-start-line="39" selection-start-column="22" selection-end-line="39" selection-end-column="22" />
           <folding>
-            <element signature="n#style#0;n#i#0;n#a#0;n#ion-nav-buttons#1;n#ion-view#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#img#0;n#div#1;n#div#1;n#div#0;n#div#0;n#ion-content#0;n#ion-view#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#ion-footer-bar#0;n#form#0;n#ion-view#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#label#0;n#ion-footer-bar#0;n#form#0;n#ion-view#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#textarea#0;n#label#0;n#ion-footer-bar#0;n#form#0;n#ion-view#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#textarea#0;n#label#0;n#ion-footer-bar#0;n#form#0;n#ion-modal-view#0;n#!!top" expanded="true" />
           </folding>
         </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/invite-to-room-controller.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="36" column="28" selection-start-line="36" selection-start-column="28" selection-end-line="36" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/create-room-controller.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="3" column="28" selection-start-line="3" selection-start-column="22" selection-end-line="3" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/img/unknown.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/chat-dialog-controller.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="113" column="33" selection-start-line="113" selection-start-column="33" selection-end-line="113" selection-end-column="33" />
+          <caret line="2" column="3" selection-start-line="2" selection-start-column="3" selection-end-line="2" selection-end-column="3" />
           <folding />
         </state>
       </provider>
@@ -841,18 +806,40 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/service/services.js">
+    <entry file="file://$PROJECT_DIR$/templates/tab-posts.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-15.0">
+          <caret line="39" column="81" selection-start-line="39" selection-start-column="81" selection-end-line="39" selection-end-column="81" />
+          <folding>
+            <element signature="n#style#0;n#i#0;n#a#0;n#ion-nav-buttons#1;n#ion-view#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#img#0;n#div#1;n#div#1;n#div#0;n#div#0;n#ion-content#0;n#ion-view#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#ion-footer-bar#0;n#form#0;n#ion-view#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#label#0;n#ion-footer-bar#0;n#form#0;n#ion-view#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#textarea#0;n#label#0;n#ion-footer-bar#0;n#form#0;n#ion-view#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/user-controller.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="253" column="19" selection-start-line="253" selection-start-column="19" selection-end-line="253" selection-end-column="19" />
+          <caret line="4" column="6" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/posts/posts-controller.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5849582">
-          <caret line="85" column="0" selection-start-line="85" selection-start-column="0" selection-end-line="85" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="144" column="49" selection-start-line="144" selection-start-column="49" selection-end-line="144" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.54388714">
+          <caret line="24" column="45" selection-start-line="24" selection-start-column="45" selection-end-line="24" selection-end-column="45" />
           <folding />
         </state>
       </provider>

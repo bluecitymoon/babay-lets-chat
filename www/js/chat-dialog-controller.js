@@ -1,7 +1,6 @@
 /**
  * Created by jerry on 17/8/15.
  */
-
 controllers.controller('ChatDetailCtrl', function ($scope, $stateParams, Chats, StorageService, $rootScope, $ionicScrollDelegate, MessageService, Utils) {
     $scope.messages = [];
     $scope.myAvatar = Utils.getMyAvatar();

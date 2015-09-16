@@ -12,7 +12,7 @@
     <ion-content>
         <ion-refresher pulling-text="下拉刷新" on-refresh="reloadSNS()" pulling-icon="ion-ios-paw-outline">
         </ion-refresher>
-        <div class="list">
+        <div class="list" ng-click="closeCommentDialog()">
             <div class="card" ng-repeat="post in allPosts">
                 <div class="item item-avatar">
                     <img src="{{post.avatar}}">
@@ -34,10 +34,10 @@
 
                     <p>
                         <a href="#" class="subdued">{{post.greetCount}} 赞</a>
-                        <a href="#" class="subdued">{{post.commentsCount}} 评论</a>
+                        <a href="#" class="subdued" ng-click="toggleCommentArea(post.id)">{{post.commentsCount}} 评论</a>
                     </p>
                 </div>
-                <div ng-show="post.commentList && post.commentList.length > 0">
+                <div ng-show="post.commentList && post.commentList.length > 0 && post.showComments">
                     <ion-list>
                         <!--class="item-remove-animate item-avatar"-->
                         <ion-item ng-repeat="comment in post.commentList"
@@ -74,7 +74,7 @@
                         <i class="icon ion-thumbsup"></i>
                         32个赞
                     </a>
-                    <a class="tab-item" href="#" ng-click="showCommentDialog(post)">
+                    <a class="tab-item" href="#" ng-click="showCommentDialog(post); $event.stopPropagation()">
                         <i class="icon ion-chatbox"></i>
                         评论
                     </a>
