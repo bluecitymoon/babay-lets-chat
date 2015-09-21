@@ -23,7 +23,7 @@ controllers.controller('InviteMyFriendToRoomCtrl', function ($scope, $ionicHisto
 
         $ionicLoading.show();
 
-        angular.forEach($scope.selectedJids, function(jid, index) {
+        angular.forEach($scope.selectedJids, function(jid) {
 
             ChatRoomService.singleInvite(jid, roomJid);
 

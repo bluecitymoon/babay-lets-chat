@@ -61,10 +61,14 @@ var services = angular.module('starter.services', [])
                 }
             }).success(function (response, status, headers, config) {
 
-                configuration.avatar = response.data.resident.headImg;
-                configuration.nickname = response.data.resident.nickName;
+                if (response.data.resident) {
 
-                StorageService.setObject('configuration', configuration);
+                    configuration.avatar = response.data.resident.headImg;
+                    configuration.nickname = response.data.resident.nickName;
+
+                    StorageService.setObject('configuration', configuration);
+                }
+
 
             }).error(function (response, status, headers, config) {
 

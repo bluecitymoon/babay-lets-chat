@@ -56,12 +56,16 @@ controllers.controller('ChatsCtrl', function ($scope, Chats, ChatDialogService, 
 
     };
 })
-    .controller('AccountCtrl', function ($scope, $window, StorageService, $state, $ionicHistory) {
+    .controller('AccountCtrl', function ($scope, $window, StorageService, $state, $ionicHistory, StartupService) {
 
         $scope.configuration = StorageService.getObject('configuration');
 
         $scope.saveConfiguration = function () {
             StorageService.setObject('configuration', $scope.configuration);
+
+            if(!connected) {
+                StartupService.startup;
+            }
         };
 
         $scope.goToPosts = function() {
