@@ -98,11 +98,11 @@ controllers.controller('ChatDetailCtrl', function ($scope, $stateParams, Chats, 
     };
 
     function keepKeyboardOpen() {
-        var txtInput = angular.element('#messageTextArea');
-        txtInput.one('blur', function() {
-            alert('textarea blur, focus back on it');
-            txtInput[0].focus();
-        });
+        //var txtInput = angular.element('#messageTextArea');
+        //txtInput.one('blur', function() {
+        //    alert('textarea blur, focus back on it');
+        //    txtInput[0].focus();
+        //});
     }
 
     //$scope.$on('taResize', function(e, ta) {
